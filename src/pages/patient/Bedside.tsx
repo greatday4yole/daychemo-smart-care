@@ -5,7 +5,7 @@ import {
 } from 'lucide-react'
 import { useApp, patientById, dispatchesOf, markVoicePlayed } from '../../store/app'
 import { speak, speakOrPlay, listen, stopListen, stopSpeak, voiceSupport } from '../../voice/engine'
-import { TEMPLATE_AUDIO, CLIP, audioUrl } from '../../data/audioMap'
+import { TEMPLATE_AUDIO, CLIP, audioUrl, offlineFor, PHASE_FALLBACK } from '../../data/audioMap'
 import { askAi } from '../../store/app'
 import { Badge, GradeBadge, RiskBadge, cn } from '../../components/ui'
 import { fmtTime, relTime } from '../../lib/date'
@@ -152,7 +152,7 @@ export default function Bedside({ onExit }: { onExit: () => void }) {
                 const text = upcoming[0]?.body ?? '输注期间请注意穿刺部位有无疼痛、肿胀、发红。出现胸闷、气促、皮肤瘙痒，请立即按呼叫铃。'
                 speakOrPlay(text, {
                   rate: 0.9,
-                  offlineSrc: upcoming[0] && TEMPLATE_AUDIO[upcoming[0].templateId] ? audioUrl(TEMPLATE_AUDIO[upcoming[0].templateId]) : undefined,
+                  offlineSrc: upcoming[0] ? audioUrl(offlineFor(upcoming[0].templateId, 'during') ?? PHASE_FALLBACK.during) : audioUrl(PHASE_FALLBACK.during),
                   useOffline: state.settings.offlinePack,
                 })
                 if (upcoming[0]) markVoicePlayed(upcoming[0].id)

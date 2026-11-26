@@ -10,6 +10,7 @@ export const TEMPLATE_AUDIO: Record<string, string> = {
   'tpl-post-48-mid': 'audio/post-04.mp3',
   'tpl-post-72-high': 'audio/post-02.mp3',
   'tpl-post-168': 'audio/post-04.mp3',
+  'tpl-post-240': 'audio/post-04.mp3',
   'tpl-post-336': 'audio/post-05.mp3',
 }
 
@@ -30,4 +31,17 @@ export const CLIP = {
 export const audioUrl = (src: string) => {
   const base = (import.meta as any).env?.BASE_URL ?? '/'
   return `${base.replace(/\/$/, '')}/${src.replace(/^\//, '')}`
+}
+
+// 兜底：新增模板若未配置离线音频，按阶段回落到通用片段（保证离线场景仍有声音）
+export const PHASE_FALLBACK: Record<string, string> = {
+  pre: 'audio/pre-01.mp3',
+  during: 'audio/during-01.mp3',
+  post: 'audio/post-01.mp3',
+}
+
+export const offlineFor = (templateId: string, phase?: string): string | undefined => {
+  if (TEMPLATE_AUDIO[templateId]) return TEMPLATE_AUDIO[templateId]
+  if (phase && PHASE_FALLBACK[phase]) return PHASE_FALLBACK[phase]
+  return undefined
 }

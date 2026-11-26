@@ -10,7 +10,7 @@ import {
 } from '../../store/app'
 import { Badge, Empty, GradeBadge, Modal, RiskBadge, cn } from '../../components/ui'
 import { listen, speak, speakOrPlay, stopListen, stopSpeak, voiceSupport, RATE_LABELS } from '../../voice/engine'
-import { TEMPLATE_AUDIO, EDUCATION_AUDIO, CLIP, audioUrl } from '../../data/audioMap'
+import { TEMPLATE_AUDIO, EDUCATION_AUDIO, CLIP, audioUrl, offlineFor, PHASE_FALLBACK } from '../../data/audioMap'
 import { CTCAE_TERMS } from '../../data/ctcae'
 import { EMERGENCY_SIGNS, termSummary } from '../../lib/ctcae'
 import { isInQuietHours, relFuture, relTime, fmtDate, fmtTime } from '../../lib/date'
@@ -30,6 +30,15 @@ const SYMPTOM_OPTIONS = [
 ]
 
 type TabKey = 'home' | 'symptoms' | 'ai' | 'education' | 'mine'
+
+// 离线音频寻址：优先模板专属片段，缺失时按阶段回落通用片段
+const offlineSrcFor = (d: { templateId: string; title?: string }): string | undefined => {
+  const src = offlineFor(d.templateId, undefined)
+  if (src) return audioUrl(src)
+  const title = d.title ?? ''
+  const phase = /化疗前|明日|准备/.test(title) ? 'pre' : /输注|化疗中|观察/.test(title) ? 'during' : 'post'
+  return audioUrl(PHASE_FALLBACK[phase])
+}
 
 export default function Patient({ onExit }: { onExit: () => void }) {
   const state = useApp()
@@ -139,7 +148,7 @@ export default function Patient({ onExit }: { onExit: () => void }) {
                   onClick={() => {
                     speakOrPlay(d.body, {
                       rate: settings.rate,
-                      offlineSrc: TEMPLATE_AUDIO[d.templateId] ? audioUrl(TEMPLATE_AUDIO[d.templateId]) : undefined,
+                      offlineSrc: offlineSrcFor(d),
                       useOffline: settings.offlinePack,
                     })
                     markVoicePlayed(d.id)
@@ -181,7 +190,7 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
     setEngineHint(null)
     const mode = await speakOrPlay(d.body, {
       rate: settings.rate,
-      offlineSrc: TEMPLATE_AUDIO[d.templateId] ? audioUrl(TEMPLATE_AUDIO[d.templateId]) : undefined,
+      offlineSrc: offlineSrcFor(d),
       useOffline: settings.offlinePack,
       onEnd: () => setPlaying(null),
     })
@@ -290,7 +299,7 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
                 <p className="mt-0.5 line-clamp-2 text-[11px] text-slate-500">{d.body}</p>
                 <p className="mt-0.5 text-[10px] text-slate-400">{d.dueAt.slice(11, 16)} · {d.channel.includes('voice') ? '语音+推送' : '推送'}</p>
               </button>
-              <button onClick={() => d.channel.includes('voice') && speakOrPlay(d.body, { rate: settings.rate, offlineSrc: TEMPLATE_AUDIO[d.templateId] ? audioUrl(TEMPLATE_AUDIO[d.templateId]) : undefined, useOffline: settings.offlinePack })} className="mt-0.5 rounded-lg bg-slate-100 p-1.5 text-slate-500" aria-label="播报">
+              <button onClick={() => d.channel.includes('voice') && speakOrPlay(d.body, { rate: settings.rate, offlineSrc: offlineSrcFor(d), useOffline: settings.offlinePack })} className="mt-0.5 rounded-lg bg-slate-100 p-1.5 text-slate-500" aria-label="播报">
                 <Volume2 className="h-3.5 w-3.5" />
               </button>
             </div>
