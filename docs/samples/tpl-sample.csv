@@ -1,0 +1,2 @@
+id,phase,offsetHours,title,body,voiceText,riskFilter,channel,approvedBy
+tpl-post-240,post,240,化疗后第 10 天：血象自查提醒,请查看今日体温与出血倾向，完成症状上报；高危患者请于今日复查血常规并将结果上传。,今天是化疗后第十天，请测量体温，注意有没有牙龈出血或者皮下瘀斑，并完成症状上报。高危患者请今天复查血常规，把结果上传到系统。,high,push|voice,肿瘤内科 王主任医师

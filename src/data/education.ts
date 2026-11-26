@@ -146,6 +146,20 @@ export const EDUCATION: EducationItem[] = [
     version: 'v1.0',
     tags: ['化疗后', '乏力', '情绪'],
   },
+  {
+    id: 'edu-post-07',
+    title: '化疗后失眠怎么调整？',
+    phase: 'post',
+    audience: 'all',
+    form: '图文+语音',
+    body:
+      '化疗后用激素（如地塞米松）或情绪焦虑，容易出现入睡困难、半夜易醒。可以这样调整：\n① 固定起床时间，即使前一晚没睡好也按时起；白天小睡不超过 30 分钟；\n② 睡前 1 小时不看手机、不看让人激动的内容，温水泡脚 15 分钟；\n③ 下午 3 点后不饮浓茶、咖啡；\n④ 躺在床上睡不着超过 20 分钟，起身到客厅做安静的事，有困意再回床；\n⑤ 连续 2 周失眠且影响白天精神，请告诉医护，可安排心理支持。',
+    keyPoints: ['固定起床时间', '白天小睡 ≤30 分钟', '睡前泡脚、不看手机', '持续 2 周请告知医护'],
+    approvedBy: '肿瘤内科 心理支持小组',
+    approvedAt: '2024-12-20',
+    version: 'v1.0',
+    tags: ['化疗后', '情绪', '睡眠'],
+  },
 ]
 
 export const educationForPhase = (phase: 'pre' | 'during' | 'post') => EDUCATION.filter((e) => e.phase === phase)

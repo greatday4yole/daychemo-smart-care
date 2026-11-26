@@ -236,6 +236,27 @@ check('后端含 CTCAE 自动研判与审计留痕', () => {
   assert(src.includes('INSERT INTO audit'))
 })
 
+// ---------- 14b. 知识库导入工具 ----------
+check('知识库批量导入脚本可用（四类模板齐备）', () => {
+  const src = readFileSync('tools/import-kb.mjs', 'utf8')
+  for (const k of ["kb:", "sop:", "ctcae:", "edu:", "tpl:"]) assert(src.includes(k), `缺少类别 ${k}`)
+  assert(src.includes('parseCsv'), '缺少 CSV 解析')
+  assert(src.includes('不得出现特殊符号') || src.includes('voiceText 含不宜朗读符号'), '缺少语音文案校验')
+  const samples = ['docs/samples/kb-sample.csv', 'docs/samples/sop-sample.csv', 'docs/samples/edu-sample.csv', 'docs/samples/tpl-sample.csv']
+  for (const f of samples) assert(existsSync(f), `缺少示例 ${f}`)
+})
+
+check('导入内容已实际并入系统数据（KB 18 / SOP 13 / 宣教 11 / 模板 13）', () => {
+  const kb = readFileSync('src/data/kb.ts', 'utf8')
+  assert((kb.match(/kb-[0-9]+|kb-custom/g) ?? []).length >= 18, 'KB 条目不足 18')
+  const sop = readFileSync('src/data/sop.ts', 'utf8')
+  assert((sop.match(/id: 'sop-/g) ?? []).length >= 13, 'SOP 条目不足 13')
+  const edu = readFileSync('src/data/education.ts', 'utf8')
+  assert((edu.match(/id: 'edu-/g) ?? []).length >= 11, '宣教条目不足 11')
+  const tpl = readFileSync('src/data/templates.ts', 'utf8')
+  assert((tpl.match(/id: 'tpl-/g) ?? []).length >= 13, '模板条目不足 13')
+})
+
 // ---------- 15. 文档齐备性 ----------
 check('交付文档齐备（手册/运维/培训/知识库模板/PRD）', () => {
   const files = ['docs/PRD.md', 'docs/操作手册.md', 'docs/运维文档.md', 'docs/知识库导入模板.md', 'docs/培训PPT.md']
