@@ -13,7 +13,9 @@
     "smoke": "node tools/smoke.mjs",
     "audio": "node tools/gen-audio.mjs",
     "ppt": "python3 -I tools/gen-ppt.py",
-    "api": "node server/index.mjs"
+    "api": "node server/index.mjs",
+    "audit": "node tools/audit-req.mjs",
+    "import:kb": "node tools/import-kb.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

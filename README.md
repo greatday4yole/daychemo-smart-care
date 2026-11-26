@@ -139,9 +139,11 @@ curl -s -X POST http://127.0.0.1:8787/api/v1/integrations/lis/results \
 ## 五、验证
 
 ```bash
-npm run verify     # 业务规则自检：CTCAE 阈值、评分分级、随访计划、AI 边界、免打扰、
-                   # SOP/宣教/模板覆盖度、权限矩阵、脱敏、接口契约、文档齐备（28 项）
-npm run smoke      # 端到端冒烟（Playwright + Chrome）：24 项，遍历全部页面与关键业务动作
+npm run verify     # 业务规则自检（30 项）：CTCAE 阈值、评分分级、随访计划、AI 边界、免打扰、
+                   # SOP/宣教/模板覆盖度、权限矩阵、脱敏、接口契约、导入工具、文档齐备
+npm run smoke      # 端到端冒烟（Playwright + Chrome，24 项）：遍历全部页面与关键业务动作
+npm run audit      # 需求逐条审计（44 项）：对照原始需求逐项验证线上可见可操作
+npm run import:kb -- docs/samples/kb-sample.csv kb --out /tmp/out   # 知识库批量导入
 ```
 
 `smoke` 需先启动预览服务（`npm run preview`）并本地安装 Playwright 浏览器：
