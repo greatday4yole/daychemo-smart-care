@@ -5,6 +5,16 @@
 **在线体验** → https://greatday4yole.github.io/daychemo-smart-care/
 ｜ 患者端直达 `#/patient` ｜ 床头端直达 `#/bedside`（均免登录）
 
+<table>
+<tr>
+<td align="center"><img src="docs/images/qr-web.png" width="150" /><br/><b>医护端</b><br/><sub>选角色进入</sub></td>
+<td align="center"><img src="docs/images/qr-patient.png" width="150" /><br/><b>患者端 H5</b><br/><sub>手机扫码体验</sub></td>
+<td align="center"><img src="docs/images/qr-bedside.png" width="150" /><br/><b>床头端</b><br/><sub>病房大屏</sub></td>
+</tr>
+</table>
+
+![临床工作台与风险看板](docs/images/screen-workbench.png)
+
 [![deploy](https://github.com/greatday4yole/daychemo-smart-care/actions/workflows/deploy.yml/badge.svg)](https://github.com/greatday4yole/daychemo-smart-care/actions/workflows/deploy.yml)
 ![React](https://img.shields.io/badge/React-19-149eca)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6)
@@ -21,6 +31,14 @@
 | **医护 Web 端** | 医生 / 护士 / 护士长 / 质控员 / 管理员 | 风险评估、巡视打卡、床旁上报、ADR 闭环、随访干预、质控报表、配置中心 | 首页选角色 |
 | **患者端 H5** | 患者 / 家属（手机） | 分时序语音提醒、症状上报（CTCAE 初判）、AI 语音问答、宣教、随访打卡 | `#/patient` |
 | **床头端** | 病房平板 / 床头屏 | 大字输注信息、实时监护、语音播报、语音提问、一键呼叫 | `#/bedside` |
+
+<table>
+<tr>
+<td align="center"><img src="docs/images/screen-patient-mobile.png" width="260" /><br/><sub>患者端首页：AI 语音提醒 + 复查安排 + 近期提醒</sub></td>
+<td align="center"><img src="docs/images/screen-patient-ai.png" width="260" /><br/><sub>AI 语音问答：知识库命中 + 急症识别 + 转医护</sub></td>
+<td align="center"><img src="docs/images/screen-monitor.png" width="330" /><br/><sub>化疗中实时监控：输液绑定 / 巡视打卡 / 监护预警</sub></td>
+</tr>
+</table>
 
 ---
 
@@ -59,11 +77,15 @@
 - 五态闭环：`reported → triaged → handling → rechecking → closed`，全程时间线留痕。
 - 记录"延迟发现"标记，导出 ADR 台账供 HFMEA / 品管圈分析。
 
+![ADR 闭环处置](docs/images/screen-adr.png)
+
 ### 模块 6 · 质控管理与数据统计
 - 六项指标自动统计：风险评估完成率、宣教覆盖率、随访完成率、ADR 数量、**骨髓抑制延迟发现例数**、平均闭环时长。
 - 三栏风险看板：高危患者 / 指标异常 / 迟访漏访。
 - 报表导出：**HFMEA（S/O/D/RPN）**、品管圈改善数据、质控明细、审计日志（CSV / JSON）。
-- 六角色权限 matriz（RBAC），患者仅可见本人数据。
+- 六角色权限矩阵（RBAC），患者仅可见本人数据。
+
+![质控指标与风险看板](docs/images/screen-qc.png)
 
 ---
 

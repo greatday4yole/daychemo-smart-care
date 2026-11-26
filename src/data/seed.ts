@@ -83,7 +83,7 @@ export const SEED_PATIENTS: Patient[] = [
       roundNodes: ['每 60 分钟', '输液结束'],
     },
     consent: true,
-    alerts: ['奥沙利铂遇冷加重周围神经毒性', '化疗泵 46 小时持续输注'],
+    alerts: ['奥沙利铂遇冷加重周围神经毒性', '化疗泵 46 小时持续输注', 'PLT 42×10⁹/L（3 级下降），牙龈少量出血'],
     nextFollowUp: dstr(daysAhead(4)),
     createdAt: iso(daysAgo(90)),
   },
@@ -295,22 +295,92 @@ export const SEED_ASSESSMENTS: RiskAssessment[] = [
     createdAt: iso(now),
     syncStatus: 'pending',
   },
+  {
+    id: 'a4',
+    patientId: 'p2',
+    answers: baseAssess(['r05', 'r06', 'r08', 'r14']),
+    score: 43,
+    level: 'mid',
+    tags: ['高骨髓抑制方案', '多线治疗', '合并症', '既往消化道反应'],
+    nurse: '赵丽',
+    nurseNote: 'mFOLFOX6 第 4 周期，既往奥沙利铂相关外周神经毒性 1 级，本次注意保暖宣教。',
+    ctcaeref: ['anc', 'nausea', 'neuropathy'],
+    createdAt: iso(daysAgo(2)),
+    archivedAt: iso(daysAgo(2)),
+    syncStatus: 'synced',
+  },
+  {
+    id: 'a5',
+    patientId: 'p4',
+    answers: baseAssess(['r05', 'r07', 'r08', 'r12']),
+    score: 51,
+    level: 'mid',
+    tags: ['高骨髓抑制方案', '高龄', '合并症', '营养风险'],
+    nurse: '赵丽',
+    nurseNote: '71 岁，高血压规律服药，NRS-2002 3 分，已请营养科会诊，关注乏力与进食情况。',
+    ctcaeref: ['anc', 'fatigue'],
+    createdAt: iso(daysAgo(5)),
+    archivedAt: iso(daysAgo(5)),
+    syncStatus: 'synced',
+  },
+  {
+    id: 'a6',
+    patientId: 'p5',
+    answers: baseAssess(['r03', 'r06', 'r10']),
+    score: 38,
+    level: 'mid',
+    tags: ['高致敏方案', '第 2 周期及以上', '中心静脉导管'],
+    nurse: '李晓梅',
+    nurseNote: '紫杉醇高致敏，本次加用苯海拉明+西咪替丁预处理，输注前 30 分钟加密巡视。',
+    ctcaeref: ['allergy', 'extrav'],
+    createdAt: iso(daysAgo(7)),
+    archivedAt: iso(daysAgo(7)),
+    syncStatus: 'synced',
+  },
+  {
+    id: 'a7',
+    patientId: 'p6',
+    answers: baseAssess(['r07', 'r13', 'r14', 'r05']),
+    score: 62,
+    level: 'high',
+    tags: ['高龄', '独居照护缺失', '既往消化道反应', '高骨髓抑制方案'],
+    nurse: '孙静',
+    nurseNote: '独居，女儿每周探望一次；曾出现 3 级腹泻，本次加强止泻与补液宣教，随访按高危执行。',
+    ctcaeref: ['nausea', 'diarrhea', 'anc'],
+    createdAt: iso(daysAgo(8)),
+    archivedAt: iso(daysAgo(8)),
+    syncStatus: 'synced',
+  },
+  {
+    id: 'a8',
+    patientId: 'p7',
+    answers: baseAssess(['r06']),
+    score: 22,
+    level: 'low',
+    tags: ['第 2 周期及以上'],
+    nurse: '赵丽',
+    nurseNote: 'XELOX 第 3 周期，前两周期无明显不良反应，按低危常规随访。',
+    ctcaeref: [],
+    createdAt: iso(daysAgo(10)),
+    archivedAt: iso(daysAgo(10)),
+    syncStatus: 'synced',
+  },
 ]
 
 export const SEED_ADRS: AdrEvent[] = [
   {
     id: 'adr1',
     patientId: 'p3',
-    termId: 'fever',
-    term: '发热',
-    grade: 2,
-    symptoms: ['发热 38.6℃', '乏力', '咽痛'],
+    termId: 'fn',
+    term: '发热性中性粒细胞减少',
+    grade: 3,
+    symptoms: ['发热 38.6℃', '乏力', '咽痛', 'ANC 1.02'],
     source: 'patient',
     vitals: { temp: 38.6, anc: 1.02, platelets: 128 },
     status: 'handling',
-    sopId: 'sop-fever',
+    sopId: 'sop-anc-3',
     timeline: [
-      { at: t(hoursAgo(20)), author: '周晓芸', role: 'patient', action: '患者自助上报', detail: '体温 38.6℃，伴乏力、咽痛，上报后系统按 CTCAE 判定发热 2 级并推送医护预警。' },
+      { at: t(hoursAgo(20)), author: '周晓芸', role: 'patient', action: '患者自助上报', detail: '体温 38.6℃，伴乏力、咽痛；血常规 ANC 1.02×10⁹/L，系统按 CTCAE 判定 FN 3 级并推送红色预警。' },
       { at: t(hoursAgo(19)), author: '孙静', role: 'nurse', action: '电话回访', detail: '15 分钟内电话回访，嘱立即前往医院查血常规+CRP，勿自行服退热药后居家观察。' },
       { at: t(hoursAgo(17)), author: '王建国', role: 'doctor', action: '医嘱调整', detail: '血常规 ANC 1.02，CRP 42；予口服抗生素，暂停下次化疗待复评。安排明日血常规复查。' },
       { at: t(hoursAgo(2)), author: '孙静', role: 'nurse', action: '追踪复评', detail: '今日随访：体温 37.8℃，咽痛减轻，乏力仍明显。仍属 1 级发热，继续观察，明日复查血常规。' },
@@ -372,6 +442,26 @@ export const SEED_ADRS: AdrEvent[] = [
     ],
     createdAt: iso(hoursAgo(8)),
   },
+  {
+    id: 'adr5',
+    patientId: 'p2',
+    termId: 'plt',
+    term: '血小板计数降低',
+    grade: 3,
+    symptoms: ['无症状', 'LIS 自动抓取', '刷牙时牙龈少量出血'],
+    source: 'lis',
+    vitals: { platelets: 42, anc: 2.4, wbc: 5.1 },
+    status: 'rechecking',
+    sopId: 'sop-plt-3',
+    timeline: [
+      { at: t(hoursAgo(46)), author: '系统', role: 'system', action: 'LIS 自动研判', detail: '化疗后第 6 天血常规：PLT 42×10⁹/L（3 级下降），自动创建 ADR 事件并推送责任护士。' },
+      { at: t(hoursAgo(45)), author: '赵丽', role: 'nurse', action: '分级确认并宣教', detail: '电话随访：牙龈少量出血已止；嘱软毛牙刷、避免磕碰与肌注，禁用牙线。' },
+      { at: t(hoursAgo(44)), author: '陈明远', role: 'doctor', action: '医嘱处置', detail: '复查血常规 q2d，暂不输注血小板（无活动性出血），加用氨肽素，密切观察出血倾向。' },
+      { at: t(hoursAgo(30)), author: '赵丽', role: 'nurse', action: '复评追踪', detail: '复查 PLT 56×10⁹/L（回升至 2 级），牙龈出血未再发，继续 q2d 复查。' },
+    ],
+    createdAt: iso(hoursAgo(46)),
+    delayedDetection: false,
+  },
 ]
 
 export const SEED_LABS: LabResult[] = [
@@ -380,6 +470,8 @@ export const SEED_LABS: LabResult[] = [
   { patientId: 'p4', at: iso(hoursAgo(8)), wbc: 2.9, anc: 1.28, plt: 168, hb: 118, orderId: 'LIS-20241126-009', source: 'LIS' },
   { patientId: 'p6', at: iso(daysAgo(1)), wbc: 3.4, anc: 1.66, plt: 142, hb: 101, orderId: 'LIS-20241125-019', source: 'LIS' },
   { patientId: 'p7', at: iso(daysAgo(1)), wbc: 5.2, anc: 3.1, plt: 210, hb: 126, orderId: 'LIS-20241125-021', source: 'LIS' },
+  { patientId: 'p2', at: iso(hoursAgo(30)), wbc: 4.8, anc: 2.1, plt: 56, hb: 112, orderId: 'LIS-20241126-027', source: 'LIS' },
+  { patientId: 'p2', at: iso(hoursAgo(46)), wbc: 5.1, anc: 2.4, plt: 42, hb: 110, orderId: 'LIS-20241126-014', source: 'LIS' },
 ]
 
 export const SEED_FOLLOWUPS: FollowUp[] = [
@@ -395,10 +487,16 @@ export const SEED_FOLLOWUPS: FollowUp[] = [
   { id: 'f10', patientId: 'p6', dueDate: dstr(daysAgo(1)), type: '居家症状随访', status: 'late', attempts: 2, lastAttemptAt: iso(hoursAgo(6)), note: '患者未按时上报，已二次提醒' },
   { id: 'f11', patientId: 'p4', dueDate: dstr(daysAgo(2)), type: '居家症状随访', status: 'missed', attempts: 2, lastAttemptAt: iso(hoursAgo(30)), note: '连续 2 天未上报症状，需电话随访' },
   { id: 'f12', patientId: 'p1', dueDate: dstr(daysAgo(7)), type: '血常规复查', status: 'done', attempts: 1, lastAttemptAt: iso(daysAgo(7)), note: 'ANC 2.4，正常', nurse: '李晓梅' },
+  { id: 'f13', patientId: 'p1', dueDate: dstr(daysAgo(3)), type: '电话随访', status: 'done', attempts: 1, lastAttemptAt: iso(daysAgo(3)), note: '电话回访：体温正常，无出血，饮食睡眠可', nurse: '李晓梅' },
+  { id: 'f14', patientId: 'p2', dueDate: dstr(daysAgo(5)), type: '血常规复查', status: 'done', attempts: 1, lastAttemptAt: iso(daysAgo(5)), note: 'WBC 4.2 / ANC 2.6 / PLT 168，正常', nurse: '赵丽' },
+  { id: 'f15', patientId: 'p2', dueDate: dstr(daysAgo(2)), type: '居家症状随访', status: 'done', attempts: 1, lastAttemptAt: iso(daysAgo(2)), note: '主诉轻度手脚麻木，已宣教保暖、避免冷饮', nurse: '赵丽' },
+  { id: 'f16', patientId: 'p5', dueDate: dstr(daysAgo(9)), type: '血常规复查', status: 'done', attempts: 1, lastAttemptAt: iso(daysAgo(9)), note: 'ANC 2.9，PLT 176，正常', nurse: '李晓梅' },
+  { id: 'f17', patientId: 'p7', dueDate: dstr(daysAgo(3)), type: '电话随访', status: 'done', attempts: 1, lastAttemptAt: iso(daysAgo(3)), note: '低危常规随访，无不适，已预约第 14 天复查', nurse: '赵丽' },
+  { id: 'f18', patientId: 'p7', dueDate: dstr(daysAgo(1)), type: '居家症状随访', status: 'done', attempts: 1, lastAttemptAt: iso(hoursAgo(10)), note: '症状上报核对：仅轻度恶心 1 级，已给饮食指导', nurse: '赵丽' },
 ]
 
 export const SEED_SYMPTOMS: SymptomReport[] = [
-  { id: 's1', patientId: 'p3', symptoms: ['fever', 'fatigue', 'sorethroat'], temp: 38.6, termId: 'fever', grade: 2, escalated: true, adrId: 'adr1', createdAt: iso(hoursAgo(20)) },
+  { id: 's1', patientId: 'p3', symptoms: ['fever', 'fatigue', 'sorethroat'], temp: 38.6, termId: 'fn', grade: 3, escalated: true, adrId: 'adr1', createdAt: iso(hoursAgo(20)) },
   { id: 's2', patientId: 'p6', symptoms: ['vomit', 'nausea'], temp: 36.8, termId: 'vomit', grade: 2, escalated: true, adrId: 'adr2', createdAt: iso(hoursAgo(26)) },
   { id: 's3', patientId: 'p6', symptoms: ['nausea'], termId: 'nausea', grade: 1, escalated: false, createdAt: iso(hoursAgo(6)) },
   { id: 's4', patientId: 'p7', symptoms: ['nausea'], temp: 36.5, termId: 'nausea', grade: 1, escalated: false, createdAt: iso(hoursAgo(10)) },
@@ -455,6 +553,10 @@ const buildDispatches = (): ReminderDispatch[] => {
         // 保留即将触发的提醒
       }
       const past = due.getTime() < Date.now()
+      // 已到期提醒：约 78% 已确认/已读，模拟真实依从性（仍有未读用于演示二次提醒）
+      const seed = (n * 41 + Number(p.id.replace('p', '')) * 17) % 100
+      const acked = past && seed < 55
+      const read = past && seed < 78
       out.push({
         id: `rd-${++n}`,
         patientId: p.id,
@@ -463,9 +565,9 @@ const buildDispatches = (): ReminderDispatch[] => {
         body: tpl.body,
         dueAt: iso(due),
         channel: tpl.channel,
-        status: past ? (n % 7 === 0 ? 'ack' : 'sent') : 'pending',
-        readAt: past && n % 3 === 0 ? iso(due) : undefined,
-        voicePlayedAt: past && tpl.channel.includes('voice') ? iso(due) : undefined,
+        status: !past ? 'pending' : acked ? 'ack' : 'sent',
+        readAt: read ? iso(due) : undefined,
+        voicePlayedAt: read && tpl.channel.includes('voice') ? iso(due) : undefined,
       })
     }
   }
@@ -487,6 +589,7 @@ export const SEED_VITALS: DeviceVital[] = Array.from({ length: 12 }).map((_, i) 
 }))
 
 export const SEED_NOTIFICATIONS: Notification[] = [
+  { id: 'n0', at: iso(hoursAgo(1.1)), level: 'danger', title: 'LIS 抓取：刘志强 PLT 42×10⁹/L（3 级）', body: '已自动创建 ADR 事件并推送处置 SOP（血小板减少 3 级），患者诉牙龈少量出血，处于复评中。', targetRole: ['nurse', 'doctor', 'headnurse', 'qc'], patientId: 'p2', read: false },
   { id: 'n1', at: iso(hoursAgo(0.4)), level: 'danger', title: '居家预警：患者周晓芸发热 38.6℃', body: '化疗后第 9 天，ANC 1.02×10⁹/L，已按 FN 流程处置，待复评。', targetRole: ['nurse', 'doctor', 'headnurse', 'qc'], patientId: 'p3', read: false },
   { id: 'n2', at: iso(hoursAgo(2)), level: 'warn', title: 'LIS 抓取：陈国栋 ANC 1.28×10⁹/L', body: '自动判定 2 级骨髓抑制，已生成 ADR 事件待处置。', targetRole: ['nurse', 'doctor'], patientId: 'p4', read: false },
   { id: 'n3', at: iso(hoursAgo(1.2)), level: 'warn', title: '输液泵预警：张桂芳 输注剩余 180ml', body: '预计 90 分钟后结束，请提前准备冲管与封管。', targetRole: ['nurse'], patientId: 'p1', read: false },

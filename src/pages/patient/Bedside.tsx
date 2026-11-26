@@ -4,7 +4,8 @@ import {
   Volume2, ShieldCheck, CheckCircle2, Waves, AlertTriangle,
 } from 'lucide-react'
 import { useApp, patientById, dispatchesOf, markVoicePlayed } from '../../store/app'
-import { speak, listen, stopListen, stopSpeak, voiceSupport } from '../../voice/engine'
+import { speak, speakOrPlay, listen, stopListen, stopSpeak, voiceSupport } from '../../voice/engine'
+import { TEMPLATE_AUDIO, CLIP, audioUrl } from '../../data/audioMap'
 import { askAi } from '../../store/app'
 import { Badge, GradeBadge, RiskBadge, cn } from '../../components/ui'
 import { fmtTime, relTime } from '../../lib/date'
@@ -149,7 +150,11 @@ export default function Bedside({ onExit }: { onExit: () => void }) {
             <button className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[13px] font-medium text-brand-800"
               onClick={() => {
                 const text = upcoming[0]?.body ?? '输注期间请注意穿刺部位有无疼痛、肿胀、发红。出现胸闷、气促、皮肤瘙痒，请立即按呼叫铃。'
-                speak(text, { rate: 0.9 })
+                speakOrPlay(text, {
+                  rate: 0.9,
+                  offlineSrc: upcoming[0] && TEMPLATE_AUDIO[upcoming[0].templateId] ? audioUrl(TEMPLATE_AUDIO[upcoming[0].templateId]) : undefined,
+                  useOffline: state.settings.offlinePack,
+                })
                 if (upcoming[0]) markVoicePlayed(upcoming[0].id)
               }}>
               <Volume2 className="h-4 w-4" /> 播放语音

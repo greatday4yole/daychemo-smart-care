@@ -9,7 +9,8 @@ import {
   patientById, dispatchesOf, followupsOf, symptomsOf, chatsOf, roleText,
 } from '../../store/app'
 import { Badge, Empty, GradeBadge, Modal, RiskBadge, cn } from '../../components/ui'
-import { listen, speak, stopListen, stopSpeak, voiceSupport, RATE_LABELS } from '../../voice/engine'
+import { listen, speak, speakOrPlay, stopListen, stopSpeak, voiceSupport, RATE_LABELS } from '../../voice/engine'
+import { TEMPLATE_AUDIO, EDUCATION_AUDIO, CLIP, audioUrl } from '../../data/audioMap'
 import { CTCAE_TERMS } from '../../data/ctcae'
 import { EMERGENCY_SIGNS, termSummary } from '../../lib/ctcae'
 import { isInQuietHours, relFuture, relTime, fmtDate, fmtTime } from '../../lib/date'
@@ -131,7 +132,11 @@ export default function Patient({ onExit }: { onExit: () => void }) {
                 <button
                   className="btn-soft flex-1"
                   onClick={() => {
-                    speak(d.body, { rate: settings.rate })
+                    speakOrPlay(d.body, {
+                      rate: settings.rate,
+                      offlineSrc: TEMPLATE_AUDIO[d.templateId] ? audioUrl(TEMPLATE_AUDIO[d.templateId]) : undefined,
+                      useOffline: settings.offlinePack,
+                    })
                     markVoicePlayed(d.id)
                   }}
                 >
@@ -162,13 +167,21 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
   const state = useApp()
   const settings = state.settings
   const [playing, setPlaying] = useState<string | null>(null)
+  const [engineHint, setEngineHint] = useState<string | null>(null)
   const support = useMemo(() => voiceSupport(), [])
   const quiet = isInQuietHours(settings.quietStart, settings.quietEnd)
 
-  const play = (d: any) => {
+  const play = async (d: any) => {
     setPlaying(d.id)
-    speak(d.body, { rate: settings.rate, onEnd: () => setPlaying(null) })
+    setEngineHint(null)
+    const mode = await speakOrPlay(d.body, {
+      rate: settings.rate,
+      offlineSrc: TEMPLATE_AUDIO[d.templateId] ? audioUrl(TEMPLATE_AUDIO[d.templateId]) : undefined,
+      useOffline: settings.offlinePack,
+      onEnd: () => setPlaying(null),
+    })
     markVoicePlayed(d.id)
+    setEngineHint(mode === 'offline' ? '离线语音包' : mode === 'muted' ? '免打扰时段（仅文字）' : '系统语音引擎')
   }
 
   const nextFollow = pendingFollow[0]
@@ -197,7 +210,7 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
               </button>
             </div>
             <p className="mt-2 text-[10px] text-brand-100/70">
-              {quiet ? '⏰ 当前为免打扰时段（夜间静音），语音将静默推送' : `语速 ${settings.rate}x · ${support.tts ? '系统语音引擎就绪' : '当前浏览器不支持语音播报，可查看文字'}`}
+              {engineHint ? `播放引擎：${engineHint}` : quiet ? '⏰ 当前为免打扰时段（夜间静音），语音将静默推送' : `语速 ${settings.rate}x · ${settings.offlinePack ? '离线语音包优先' : ''}${support.tts ? ' · 系统语音兜底' : ' · 当前浏览器不支持语音播报，可查看文字'}`}
             </p>
           </>
         ) : (
@@ -272,7 +285,7 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
                 <p className="mt-0.5 line-clamp-2 text-[11px] text-slate-500">{d.body}</p>
                 <p className="mt-0.5 text-[10px] text-slate-400">{d.dueAt.slice(11, 16)} · {d.channel.includes('voice') ? '语音+推送' : '推送'}</p>
               </button>
-              <button onClick={() => d.channel.includes('voice') && speak(d.body, { rate: settings.rate })} className="mt-0.5 rounded-lg bg-slate-100 p-1.5 text-slate-500" aria-label="播报">
+              <button onClick={() => d.channel.includes('voice') && speakOrPlay(d.body, { rate: settings.rate, offlineSrc: TEMPLATE_AUDIO[d.templateId] ? audioUrl(TEMPLATE_AUDIO[d.templateId]) : undefined, useOffline: settings.offlinePack })} className="mt-0.5 rounded-lg bg-slate-100 p-1.5 text-slate-500" aria-label="播报">
                 <Volume2 className="h-3.5 w-3.5" />
               </button>
             </div>
@@ -313,9 +326,9 @@ function SymptomReportPanel({ pid }: { pid: string }) {
     setTemp('')
     setExtra('')
     if ((res as any).emergency) {
-      speak(
+      speakOrPlay(
         '您上报的症状需要立即处理。请立即联系您的责任护士，或拨打日间化疗中心电话，情况紧急请拨打一百二十或前往急诊。我已同时通知医护。',
-        { rate: state.settings.rate },
+        { rate: state.settings.rate, offlineSrc: audioUrl(CLIP.emergency), useOffline: state.settings.offlinePack },
       )
     }
   }
@@ -641,7 +654,7 @@ function EducationPanel({ pid, risk, phase }: { pid: string; risk: 'low' | 'mid'
       <Modal open={!!current} onClose={() => setOpen(null)} title={current?.title ?? ''} width="max-w-md"
         footer={current ? (
           <div className="flex gap-2">
-            <button className="btn-soft flex-1" onClick={() => speak(`${current.title}。${current.body}`, { rate: state.settings.rate })}>
+            <button className="btn-soft flex-1" onClick={() => speakOrPlay(`${current.title}。${current.body}`, { rate: state.settings.rate, offlineSrc: EDUCATION_AUDIO[current.id] ? audioUrl(EDUCATION_AUDIO[current.id]) : undefined, useOffline: state.settings.offlinePack })}>
               <Volume2 className="h-4 w-4" /> 语音朗读全文
             </button>
             <button className="btn-primary flex-1" onClick={() => setOpen(null)}>我已阅读</button>
@@ -740,9 +753,14 @@ function MinePanel({ pid, elder, setElder }: { pid: string; elder: boolean; setE
             </button>
           </div>
 
-          <button className="btn-soft w-full" onClick={() => {
+          <button className="btn-soft w-full" onClick={async () => {
             setPlayingDemo(true)
-            speak('您好，我是您的 AI 语音小助手。请按时测量体温，如有发热、胸闷、牙龈出血，请立即联系医护。您也可以点击话筒直接向我提问。', { rate: settings.rate, onEnd: () => setPlayingDemo(false) })
+            await speakOrPlay('您好，我是您的 AI 语音小助手。请按时测量体温，如有发热、胸闷、牙龈出血，请立即联系医护。您也可以点击话筒直接向我提问。', {
+              rate: settings.rate,
+              offlineSrc: audioUrl(CLIP.welcome),
+              useOffline: settings.offlinePack,
+              onEnd: () => setPlayingDemo(false),
+            })
           }}>
             <Volume2 className="h-4 w-4" /> {playingDemo ? '正在播报…' : '试听语音效果'}
           </button>

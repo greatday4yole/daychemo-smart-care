@@ -32,7 +32,7 @@ export default function Qc({ onNavigate }: { onNavigate: (k: NavKey) => void }) 
   const kpis = [
     { l: '风险评估完成率', v: summary.assessRate, num: `${summary.assessed}/${summary.total}`, tone: summary.assessRate >= 90 ? 'emerald' : 'amber' },
     { l: '宣教覆盖率', v: summary.eduRate, num: `${summary.educationCovered}/${summary.total}`, tone: summary.eduRate >= 90 ? 'emerald' : 'amber' },
-    { l: '随访完成率', v: summary.fuRate, num: `${summary.fuDone}/${summary.fuTotal}`, tone: summary.fuRate >= 80 ? 'emerald' : 'amber' },
+    { l: '随访完成率', v: summary.fuRate, num: `${summary.fuDone}/${summary.fuDue}（已到期）`, tone: summary.fuRate >= 80 ? 'emerald' : 'amber' },
     { l: '提醒已读率', v: summary.dispatchAckRate, num: `${state.dispatches.filter((d) => d.readAt).length}/${state.dispatches.length}`, tone: 'brand' },
   ]
 
@@ -84,7 +84,7 @@ export default function Qc({ onNavigate }: { onNavigate: (k: NavKey) => void }) 
               </div>
               <div className="mt-4 grid grid-cols-3 gap-2">
                 {[
-                  { l: '待随访', v: summary.fuTotal - summary.fuDone, t: 'slate' },
+                  { l: '待随访', v: Math.max(0, summary.fuDue - summary.fuDone - summary.fuLate - summary.fuMissed), t: 'slate' },
                   { l: '迟访', v: summary.fuLate, t: 'amber' },
                   { l: '漏访', v: summary.fuMissed, t: 'rose' },
                 ].map((x) => (
@@ -259,7 +259,7 @@ export default function Qc({ onNavigate }: { onNavigate: (k: NavKey) => void }) 
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 px-4 py-3">
               <div>
                 <h2 className="section-title">品管圈改善数据（按不良反应类型）</h2>
-                <p className="mt-0.5 text-[11px] text-slate-400">用于 QCC 选题、现状把握与改善效果对比</p>
+                <p className="mt-0.5 text-[11px] text-slate-400">用于 QCC 选题、现状把握与改善效果对比；随访完成率按“已到期任务”口径统计</p>
               </div>
               <button className="btn-ghost" onClick={() => downloadCsv('品管圈改善数据', qcc)}><Download className="h-4 w-4" />导出 CSV</button>
             </div>

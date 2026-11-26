@@ -8,6 +8,7 @@ export interface QcSummary {
   educationCovered: number
   eduRate: number
   fuTotal: number
+  fuDue: number
   fuDone: number
   fuLate: number
   fuMissed: number
@@ -36,6 +37,8 @@ export const buildQcSummary = (input: {
   const educationCovered = new Set(
     input.dispatches.filter((d) => d.status !== 'muted' && d.channel.includes('push')).map((d) => d.patientId),
   ).size
+  const todayStr = fmtDate(new Date())
+  const fuDue = input.followups.filter((f) => f.dueDate <= todayStr).length
   const fuDone = input.followups.filter((f) => f.status === 'done').length
   const fuLate = input.followups.filter((f) => f.status === 'late').length
   const fuMissed = input.followups.filter((f) => f.status === 'missed').length
@@ -63,8 +66,9 @@ export const buildQcSummary = (input: {
     educationCovered,
     eduRate: total ? Math.round((educationCovered / total) * 100) : 0,
     fuTotal: input.followups.length,
+    fuDue,
     fuDone, fuLate, fuMissed,
-    fuRate: input.followups.length ? Math.round((fuDone / input.followups.length) * 100) : 0,
+    fuRate: fuDue ? Math.min(100, Math.round((fuDone / fuDue) * 100)) : 0,
     adrCount: input.adrs.length,
     adrHigh,
     delayedAnc,

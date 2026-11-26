@@ -53,7 +53,7 @@ export default function Workbench({ onNavigate }: { onNavigate: (k: NavKey) => v
   const unread = notifications.filter((n) => !n.read).length
   const pendingAdr = state.adrs.filter((a) => a.status !== 'closed').length
   const openAlerts = myPatients.filter((p) => p.alerts.length > 0).length
-  const dueSoon = state.followups.filter((f) => f.status !== 'done').length
+  const dueSoon = state.followups.filter((f) => f.status !== 'done' && f.dueDate <= fmtDate(new Date())).length
 
   const maxTrend = Math.max(1, ...trend.map((t) => Math.max(t.adr, t.symptom, t.followup)))
 

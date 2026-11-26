@@ -100,6 +100,39 @@ export const speak = (text: string, opts: SpeakOptions = {}) => {
 
 export const stopSpeak = () => {
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) window.speechSynthesis.cancel()
+  if (typeof window !== 'undefined' && currentAudio) {
+    currentAudio.pause()
+    currentAudio = null
+  }
+}
+
+let currentAudio: HTMLAudioElement | null = null
+
+// 统一播放入口：优先离线语音包（弱网可用），失败回落系统 TTS
+export const speakOrPlay = async (
+  text: string,
+  opts: SpeakOptions & { offlineSrc?: string; useOffline?: boolean } = {},
+): Promise<'offline' | 'tts' | 'muted'> => {
+  if (opts.respectQuiet && opts.settings && isInQuietHours(opts.settings.quietStart, opts.settings.quietEnd)) {
+    opts.onEnd?.()
+    return 'muted'
+  }
+  stopSpeak()
+  if (opts.offlineSrc && opts.useOffline !== false) {
+    try {
+      const audio = new Audio(opts.offlineSrc)
+      audio.playbackRate = Math.max(0.5, Math.min(2, opts.rate ?? 1))
+      audio.onended = () => { currentAudio = null; opts.onEnd?.() }
+      audio.onerror = () => { currentAudio = null; speak(text, opts) }
+      currentAudio = audio
+      await audio.play()
+      return 'offline'
+    } catch {
+      currentAudio = null
+    }
+  }
+  speak(text, opts)
+  return 'tts'
 }
 
 export interface ListenOptions {

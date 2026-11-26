@@ -40,7 +40,7 @@ export interface AppState {
   lastActionAt: string
 }
 
-const VERSION = 'v1'
+const VERSION = 'v3'
 const KEY = `daychemo:state:${VERSION}`
 
 const initialState = (): AppState => ({

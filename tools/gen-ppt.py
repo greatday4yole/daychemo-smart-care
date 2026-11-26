@@ -437,9 +437,15 @@ for i, (n, t, d) in enumerate(steps):
     text(s, Inches(1.42), y + Inches(0.09), Inches(1.7), Inches(0.3), t, 10.5, INK, True)
     text(s, Inches(3.16), y + Inches(0.1), Inches(4.82), Inches(0.58), d, 9.2, INK2, line_spacing=1.2)
 rect(s, Inches(8.5), Inches(2.15), Inches(4.08), Inches(4.3), BRAND_D, None, 0.06)
-text(s, Inches(8.74), Inches(2.32), Inches(3.6), Inches(0.3), "老年患者友好设计", 11, RGBColor(0x7B, 0xE2, 0xE0), True)
+text(s, Inches(8.74), Inches(2.3), Inches(3.6), Inches(0.3), "扫码进入患者端", 11, RGBColor(0x7B, 0xE2, 0xE0), True)
+try:
+    s.shapes.add_picture("docs/images/qr-patient.png", Inches(9.32), Inches(2.66), height=Inches(1.7))
+    text(s, Inches(8.74), Inches(4.44), Inches(3.6), Inches(0.28), "与学员手机同屏对照操作", 8.5, RGBColor(0x9E, 0xD8, 0xD7), align=PP_ALIGN.CENTER)
+except Exception:
+    pass
+text(s, Inches(8.74), Inches(4.78), Inches(3.6), Inches(0.3), "老年友好设计", 11, RGBColor(0x7B, 0xE2, 0xE0), True)
 for i, t in enumerate(["大字模式（字号 +18%、按钮 ≥56px）", "语音优先：可全程“说话”完成上报与提问", "10 个图标 + 表情，无需阅读长文", "高危症状红色大字 + 一键拨 120", "免打扰夜间静音，不打扰睡眠"]):
-    text(s, Inches(8.74), Inches(2.75) + Inches(0.62) * i, Inches(3.6), Inches(0.55), "· " + t, 9.2, RGBColor(0xD6, 0xF7, 0xF5), line_spacing=1.2)
+    text(s, Inches(8.74), Inches(5.14) + Inches(0.26) * i, Inches(3.6), Inches(0.26), "· " + t, 8.2, RGBColor(0xD6, 0xF7, 0xF5), line_spacing=1.05)
 text(s, Inches(0.78), Inches(6.62), Inches(11.8), Inches(0.3),
      "考核点：能否独立完成“听提醒 → 报症状 → 语音提问 → 转人工”四步（限时 3 分钟）", 10, MUTED)
 footer(s, 13)
