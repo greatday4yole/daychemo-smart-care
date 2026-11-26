@@ -1,0 +1,33 @@
+{
+  "name": "daychemo-smart-care",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "日间化疗患者智慧照护系统 - 医护Web端 / 患者H5 / AI语音提醒引擎",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173",
+    "server": "node server/index.mjs",
+    "verify": "node tools/verify.mjs",
+    "smoke": "node tools/smoke.mjs",
+    "audio": "node tools/gen-audio.mjs",
+    "ppt": "python3 -I tools/gen-ppt.py",
+    "api": "node server/index.mjs"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.7.0",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}

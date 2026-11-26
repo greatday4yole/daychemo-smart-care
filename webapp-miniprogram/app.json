@@ -1,0 +1,10 @@
+{
+  "pages": ["pages/web/index"],
+  "window": {
+    "navigationBarTitleText": "日间化疗智慧照护",
+    "navigationBarBackgroundColor": "#0e8f92",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f8fafc"
+  },
+  "sitemapLocation": "sitemap.json"
+}

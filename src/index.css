@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-slate-50 text-slate-800 antialiased;
+  font-feature-settings: 'tnum';
+}
+
+/* 台湾/大陆字体回退与数字等宽 */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* 打印（报表导出） */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+}
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
+::-webkit-scrollbar-track { @apply bg-transparent; }
+
+/* 老年患者模式：更大字号与触控面积 */
+.elder-mode {
+  font-size: 118%;
+}
+.elder-mode .elder-btn {
+  min-height: 56px;
+  @apply text-lg;
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-xl border border-slate-200/80 shadow-card;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition
+      disabled:opacity-50 disabled:cursor-not-allowed select-none;
+  }
+  .btn-primary { @apply btn bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800; }
+  .btn-ghost   { @apply btn bg-white text-slate-700 border border-slate-200 hover:bg-slate-50; }
+  .btn-danger  { @apply btn bg-rose-600 text-white hover:bg-rose-700; }
+  .btn-soft    { @apply btn bg-brand-50 text-brand-700 hover:bg-brand-100; }
+  .input {
+    @apply w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none transition
+      placeholder:text-slate-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100;
+  }
+  .label { @apply text-xs font-medium text-slate-500; }
+  .section-title { @apply text-sm font-semibold text-slate-900; }
+}
