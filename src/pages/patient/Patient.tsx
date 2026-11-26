@@ -57,7 +57,12 @@ export default function Patient({ onExit }: { onExit: () => void }) {
     .filter((d) => d.dueAt.slice(0, 10) >= windowStart && d.dueAt.slice(0, 10) <= windowEnd)
     .sort((a, b) => Math.abs(new Date(a.dueAt).getTime() - Date.now()) - Math.abs(new Date(b.dueAt).getTime() - Date.now()))
   const todayReminders = dispatches.filter((d) => d.dueAt.slice(0, 10) === todayStr)
-  const latestReminder = dispatches.find((d) => d.status !== 'ack') ?? dispatches[0]
+  // 首页主卡：优先展示“最近且未确认”的提醒（若都在窗口内已确认，则展示最接近当前时间的提醒）
+  const closest = (list: typeof dispatches) =>
+    [...list].sort((a, b) => Math.abs(new Date(a.dueAt).getTime() - Date.now()) - Math.abs(new Date(b.dueAt).getTime() - Date.now()))[0]
+  const latestReminder =
+    closest(recentReminders.filter((d) => d.status !== 'ack' && d.status !== 'muted')) ??
+    closest(recentReminders.length ? recentReminders : dispatches)
   const openReminders = dispatches.filter((d) => d.status === 'pending' || (d.status === 'sent' && !d.readAt))
   const followups = followupsOf(pid).sort((a, b) => a.dueDate.localeCompare(b.dueDate))
   const pendingFollow = followups.filter((f) => f.status !== 'done')

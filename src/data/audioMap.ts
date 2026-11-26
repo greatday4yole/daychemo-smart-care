@@ -5,7 +5,10 @@ export const TEMPLATE_AUDIO: Record<string, string> = {
   'tpl-during-30': 'audio/during-01.mp3',
   'tpl-during-60': 'audio/during-02.mp3',
   'tpl-post-6': 'audio/post-01.mp3',
+  'tpl-post-24': 'audio/post-01.mp3',
   'tpl-post-120': 'audio/post-02.mp3',
+  'tpl-post-72-mid': 'audio/post-04.mp3',
+  'tpl-post-72-high': 'audio/post-02.mp3',
   'tpl-post-168': 'audio/post-04.mp3',
   'tpl-post-336': 'audio/post-05.mp3',
 }
