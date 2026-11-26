@@ -79,7 +79,7 @@ export default function Integrations({ onNavigate }: { onNavigate: (k: NavKey) =
       active="integrations"
       onNavigate={onNavigate}
       title="接口集成联调"
-      subtitle="HIS / LIS / 消息平台 / 监护设备 · 数据标准与隐私脱敏"
+      subtitle="HIS / LIS / 消息平台 / 监护设备 · 数据标准与隐私脱敏 · 等保三级合规要求"
       actions={<>
         <button className="btn-ghost" onClick={() => downloadJson('接口配置导出', { interfaces: IFACES, apis: API_LIST })}><Download className="h-4 w-4" />导出接口清单</button>
         <button className="btn-primary" onClick={pushLab}><Zap className="h-4 w-4" />快速注入检验结果</button>
@@ -251,7 +251,7 @@ export default function Integrations({ onNavigate }: { onNavigate: (k: NavKey) =
             </div>
             <div className="border-t border-slate-100 bg-slate-50/60 px-4 py-3 text-[11px] leading-relaxed text-slate-500">
               <p><strong>安全要求：</strong>HTTPS（TLS 1.2+）、OAuth2 客户端凭证 + JWT 鉴权、患者标识使用院内脱敏 ID、审计日志留存 ≥6 个月、数据不出院内网（演示环境为公网静态部署，不含真实数据）。</p>
-              <p className="mt-1"><strong>数据标准：</strong>符合《医院信息安全等级保护基本要求》三级、WS 445 电子病历基本数据集、HL7 FHIR R4 资源映射。</p>
+              <p className="mt-1"><strong>数据标准：</strong>符合等保三级（《GB/T 22239 信息安全技术 网络安全等级保护基本要求》）、WS 445 电子病历基本数据集、HL7 FHIR R4 资源映射。</p>
             </div>
           </section>
         )}

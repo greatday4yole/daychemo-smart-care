@@ -1,0 +1,32 @@
+import { chromium } from 'playwright'
+const BASE = 'https://greatday4yole.github.io/daychemo-smart-care/'
+const b = await chromium.launch({ channel: 'chrome' })
+const p = await (await b.newContext({ viewport: { width: 1440, height: 950 } })).newPage()
+await p.goto(BASE, { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(700)
+await p.getByText('张海燕').first().click(); await p.waitForTimeout(600)
+await p.locator('aside nav button', { hasText: '提醒与配置中心' }).first().click(); await p.waitForTimeout(600)
+const txt = await p.locator('main').innerText()
+console.log('--- 配置中心默认 Tab 文本 ---')
+console.log(txt.slice(0, 500))
+console.log('has 参数:', txt.includes('AI 语音引擎参数'), 'has 免打扰:', txt.includes('免打扰'))
+// 切到设置 tab
+await p.getByText('语音与免打扰').first().click(); await p.waitForTimeout(500)
+const t2 = await p.locator('main').innerText()
+console.log('--- 语音与免打扰 Tab ---')
+console.log('has 参数:', t2.includes('AI 语音引擎参数'), 'has 免打扰:', t2.includes('免打扰开始'))
+await p.screenshot({ path: '/tmp/audit/dbg-config.png', fullPage: true })
+// 接口页
+await p.locator('aside nav button', { hasText: '接口集成联调' }).first().click(); await p.waitForTimeout(500)
+const t3 = await p.locator('main').innerText()
+console.log('--- 接口页 --- has 等保:', t3.includes('等保'))
+await p.getByText('REST API 规范').first().click(); await p.waitForTimeout(400)
+const t4 = await p.locator('main').innerText()
+console.log('--- API Tab --- has 等保:', t4.includes('等保'))
+// 患者端 mine
+const mob = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true })
+const mp = await mob.newPage()
+await mp.goto(`${BASE}#/patient`, { waitUntil: 'domcontentloaded' }); await mp.waitForTimeout(900)
+await mp.locator('nav button:has-text("我的")').click(); await mp.waitForTimeout(500)
+const t5 = await mp.locator('main').innerText()
+console.log('--- 患者端我的 ---', 'AI语音播报:', t5.includes('AI 语音播报'), '免打扰:', t5.includes('免打扰'))
+await b.close()
