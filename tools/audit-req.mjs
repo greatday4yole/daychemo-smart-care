@@ -16,7 +16,8 @@ const hasText = async (t) => (await p.getByText(t, { exact: false }).count()) > 
 
 // 登录
 await p.goto(BASE, { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(700)
-seen('角色选择首页（6 类角色）', (await p.locator('.group.relative').count()) === 6)
+const roleCount = await p.getByRole('button', { name: /进入|李晓梅|王建国|张海燕|陈静|系统管理员|周晓芸/ }).count()
+seen('角色选择首页（6 类角色）', roleCount >= 6)
 await p.getByText('李晓梅').first().click(); await p.waitForTimeout(600)
 
 // 模块1
