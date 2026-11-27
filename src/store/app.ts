@@ -84,11 +84,40 @@ const listeners = new Set<() => void>()
 const emit = (msg?: string) => {
   state = { ...state, lastAction: msg ?? state.lastAction, lastActionAt: msg ? new Date().toISOString() : state.lastActionAt }
   try {
-    localStorage.setItem(KEY, JSON.stringify({ ...state, lastAction: '' }))
+    // lastAction 一并持久化：其他标签页据此弹出动作提示
+    localStorage.setItem(KEY, JSON.stringify(state))
   } catch {
     /* 内存模式运行（localStorage 不可用 / 超出配额） */
   }
   listeners.forEach((l) => l())
+}
+
+// ---------------------------------------------------------------------------
+// 跨标签页实时同步：同一浏览器开两个标签（如护士端 + 患者端），任一端的
+// 评估 / 上报 / 预警会即时出现在另一端 —— 用于演示"多端数据联动"。
+// 注意：会话身份（角色/当前患者）按标签页独立，两个标签可分别扮演不同角色。
+// 生产环境多用户共享请部署 server/index.mjs（SQLite + REST）。
+// ---------------------------------------------------------------------------
+if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (e.key !== KEY || !e.newValue) return
+    try {
+      const incoming = JSON.parse(e.newValue) as Partial<AppState>
+      state = {
+        ...initialState(),
+        ...incoming,
+        // 会话字段保留本标签页的值，不随同步覆盖
+        role: state.role,
+        userName: state.userName,
+        activePatientId: state.activePatientId,
+        lastAction: incoming.lastAction ?? '',
+        lastActionAt: incoming.lastActionAt ?? '',
+      }
+      listeners.forEach((l) => l())
+    } catch {
+      /* 跨标签同步失败时静默忽略 */
+    }
+  })
 }
 
 export const subscribe = (l: () => void) => {

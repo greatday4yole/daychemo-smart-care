@@ -97,7 +97,18 @@
 
 ---
 
-## 三、快速开始
+## 三、数据交互模式（重要）
+
+| 场景 | 数据存储 | 交互能力 | 说明 |
+|---|---|---|---|
+| **GitHub Pages 在线演示（当前）** | 浏览器 localStorage | ✅ 全流程业务真实运行：评估→随访→上报→预警→闭环→质控，数据实时联动、刷新不丢 | 同一浏览器内，多标签页**实时同步**（`storage` 事件）：可开两个标签分别扮演护士端与患者端，患者上报发热，护士端立即收到预警 |
+| 同一浏览器 · 不同标签页 | 同上 | ✅ 实时联动 | 会话身份按标签页独立，可分别登录不同角色 |
+| 不同浏览器 / 不同电脑 / 不同人 | 各自独立 | ❌ 互相不可见 | 静态托管无服务器，演示数据各存各的 |
+| **生产部署（server/index.mjs）** | SQLite / PostgreSQL | ✅ 真正多用户共享，REST 14 接口 + CTCAE 自动研判 + 审计 | 部署于院内网或云主机后，前端可切换为 API 模式；HIS/LIS 需院方提供接口 |
+
+> 简言之：**业务逻辑与流程闭环在演示环境全部真实运行**；"跨人共享数据"需要后端，仓库已内置零依赖 Node 服务（`node server/index.mjs`，同时托管前端与 API）。
+
+## 四、快速开始
 
 ```bash
 git clone https://github.com/greatday4yole/daychemo-smart-care.git
@@ -127,7 +138,7 @@ npm run preview         # 预览构建产物 http://localhost:4173
 
 ---
 
-## 四、可选：带持久化的后端
+## 五、可选：带持久化的后端
 
 内置零依赖演示后端（Node 内置 `http` + `node:sqlite`），实现与前端一致的 REST 契约、CTCAE 自动研判与审计留痕：
 
@@ -144,7 +155,7 @@ curl -s -X POST http://127.0.0.1:8787/api/v1/integrations/lis/results \
 
 ---
 
-## 五、验证
+## 六、验证
 
 ```bash
 npm run verify     # 业务规则自检（30 项）：CTCAE 阈值、评分分级、随访计划、AI 边界、免打扰、
@@ -160,7 +171,7 @@ npm run import:kb -- docs/samples/kb-sample.csv kb --out /tmp/out   # 知识库�
 
 ---
 
-## 六、技术栈与工程结构
+## 七、技术栈与工程结构
 
 ```
 ├── src/
@@ -199,7 +210,7 @@ npm run import:kb -- docs/samples/kb-sample.csv kb --out /tmp/out   # 知识库�
 
 ---
 
-## 七、交付文档
+## 八、交付文档
 
 | 文档 | 说明 |
 |---|---|
@@ -211,7 +222,7 @@ npm run import:kb -- docs/samples/kb-sample.csv kb --out /tmp/out   # 知识库�
 
 ---
 
-## 八、关键设计取舍
+## 九、关键设计取舍
 
 | 取舍 | 原因 |
 |---|---|
@@ -224,6 +235,6 @@ npm run import:kb -- docs/samples/kb-sample.csv kb --out /tmp/out   # 知识库�
 
 ---
 
-## 九、许可
+## 十、许可
 
 MIT License · 临床内容（SOP / 宣教 / 知识库）参考 CSCO、NCCN、CTCAE v5.0 等公开指南整理，**仅供演示，不得直接用于临床决策**。
