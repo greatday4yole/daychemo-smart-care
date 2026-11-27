@@ -88,7 +88,7 @@ export default function Qc({ onNavigate }: { onNavigate: (k: NavKey) => void }) 
                   { l: '迟访', v: summary.fuLate, t: 'amber' },
                   { l: '漏访', v: summary.fuMissed, t: 'rose' },
                 ].map((x) => (
-                  <div key={x.l} className="rounded-lg bg-slate-50 px-2 py-2 text-center">
+                  <div key={x.l} className="rounded-[2px] bg-slate-50 px-2 py-2 text-center">
                     <p className={cn('text-lg font-semibold tnum', x.t === 'rose' ? 'text-rose-600' : x.t === 'amber' ? 'text-amber-600' : 'text-slate-700')}>{x.v}</p>
                     <p className="text-[10px] text-slate-500">{x.l}</p>
                   </div>
@@ -111,11 +111,11 @@ export default function Qc({ onNavigate }: { onNavigate: (k: NavKey) => void }) 
                 {qcc.length === 0 && <Empty title="暂无 ADR 数据" />}
               </div>
               <div className="mt-4 grid grid-cols-2 gap-2 text-center">
-                <div className="rounded-lg bg-emerald-50 px-2 py-2">
+                <div className="rounded-[2px] bg-emerald-50 px-2 py-2">
                   <p className="text-lg font-semibold text-emerald-600 tnum">{summary.avgCloseHours}h</p>
                   <p className="text-[10px] text-emerald-700">平均闭环时长</p>
                 </div>
-                <div className="rounded-lg bg-brand-50 px-2 py-2">
+                <div className="rounded-[2px] bg-brand-50 px-2 py-2">
                   <p className="text-lg font-semibold text-brand-700 tnum">{summary.chatEscalation}</p>
                   <p className="text-[10px] text-brand-700">AI 转人工接诊</p>
                 </div>

@@ -137,7 +137,7 @@ export default function Monitor({ onNavigate }: { onNavigate: (k: NavKey) => voi
             <section key={p.id} className="card overflow-hidden">
               <div className={cn('flex flex-wrap items-center justify-between gap-2 px-4 py-3 border-b', p.risk === 'high' ? 'border-rose-100 bg-rose-50/50' : 'border-slate-100 bg-slate-50/50')}>
                 <div className="flex items-center gap-2">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-sm font-semibold text-slate-700 ring-1 ring-slate-200">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-[2px] bg-white text-sm font-semibold text-slate-700 ring-1 ring-slate-200">
                     {p.name.slice(0, 1)}
                   </div>
                   <div>
@@ -179,7 +179,7 @@ export default function Monitor({ onNavigate }: { onNavigate: (k: NavKey) => voi
                 </div>
 
                 {/* 实时监护 / 生命体征 */}
-                <div className="rounded-lg bg-slate-50 p-2.5">
+                <div className="rounded-[2px] bg-slate-50 p-2.5">
                   <div className="flex items-center justify-between">
                     <p className="text-[11px] font-medium text-slate-500 flex items-center gap-1"><Radio className="h-3 w-3 text-emerald-500" />床旁监护 / 输液泵</p>
                     <button className="text-[10px] font-medium text-brand-600 hover:underline" onClick={() => simulateVital(p.id)}>模拟采集</button>
@@ -214,7 +214,7 @@ export default function Monitor({ onNavigate }: { onNavigate: (k: NavKey) => voi
                       key={n.key}
                       onClick={() => doRound(p, n)}
                       className={cn(
-                        'rounded-lg border px-2 py-1.5 text-left text-[11px] transition',
+                        'rounded-[2px] border px-2 py-1.5 text-left text-[11px] transition',
                         n.done ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
                           : n.overdue ? 'border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100'
                           : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50',
@@ -245,7 +245,7 @@ export default function Monitor({ onNavigate }: { onNavigate: (k: NavKey) => voi
               {/* AI 语音播报（床头端） */}
               <div className="border-t border-slate-100 px-4 py-3">
                 <p className="text-[11px] font-medium text-slate-500 flex items-center gap-1"><Waves className="h-3 w-3 text-brand-600" />床头端 AI 语音播报（演示）</p>
-                <div className="mt-1.5 rounded-lg bg-brand-50/60 px-3 py-2 text-[11px] leading-relaxed text-brand-900">
+                <div className="mt-1.5 rounded-[2px] bg-brand-50/60 px-3 py-2 text-[11px] leading-relaxed text-brand-900">
                   “现在开始输注，请注意穿刺部位有没有疼痛、肿胀或者发红……出现任何不舒服，请立即按床头呼叫铃。”
                 </div>
                 <p className="mt-1 text-[10px] text-slate-400">播报内容来自提醒模板库（医护审核），患者端“AI 语音小助手”可提问并获得宣教级应答。</p>
@@ -279,7 +279,7 @@ export default function Monitor({ onNavigate }: { onNavigate: (k: NavKey) => voi
                   key={s.key}
                   onClick={() => setSymptoms((prev) => (prev.includes(s.key) ? prev.filter((x) => x !== s.key) : [...prev, s.key]))}
                   className={cn(
-                    'rounded-lg border px-3 py-2 text-sm transition',
+                    'rounded-[2px] border px-3 py-2 text-sm transition',
                     symptoms.includes(s.key) ? 'border-rose-300 bg-rose-50 font-medium text-rose-700' : 'border-slate-200 text-slate-600 hover:bg-slate-50',
                   )}
                 >
@@ -306,7 +306,7 @@ export default function Monitor({ onNavigate }: { onNavigate: (k: NavKey) => voi
             <span className="label">补充描述</span>
             <textarea className="input mt-1 min-h-[70px]" value={symptomNote} onChange={(e) => setSymptomNote(e.target.value)} placeholder="如：输注 20 分钟出现颜面潮红、胸闷，心率 102，血氧 96%" />
           </label>
-          <div className="rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
+          <div className="rounded-[2px] bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
             提交后将自动匹配 SOP：过敏 1/2 级 → 抗过敏处置；3 级及以上 → 休克应急流程。同时推送站内预警并进入 ADR 追踪闭环。
           </div>
         </div>

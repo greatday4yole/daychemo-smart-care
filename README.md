@@ -1,4 +1,10 @@
+<p align="center">
+  <img src="public/brand/logo-changhai.png" alt="上海长海医院 CHANGHAI HOSPITAL" height="56" />
+</p>
+
 # 日间化疗患者智慧照护系统
+
+<p align="center"><b>上海长海医院 · 肿瘤内科日间化疗中心</b></p>
 
 > 覆盖 **化疗前风险评估 → 化疗中实时监控 → 化疗后居家随访** 全周期的智慧照护平台，融合 AI 语音交互、分层智能提醒、骨髓抑制/过敏风险预警与不良反应（ADR）闭环处置，支撑 HFMEA / 品管圈风险管控落地。
 
@@ -14,6 +20,8 @@
 </table>
 
 ![临床工作台与风险看板](docs/images/screen-workbench.png)
+
+<sub>界面配色与排版参照上海长海医院官网（海军蓝 #004589 / 中国红 #d01027）设计，并接入医院标识。</sub>
 
 [![deploy](https://github.com/greatday4yole/daychemo-smart-care/actions/workflows/deploy.yml/badge.svg)](https://github.com/greatday4yole/daychemo-smart-care/actions/workflows/deploy.yml)
 ![React](https://img.shields.io/badge/React-19-149eca)

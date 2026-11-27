@@ -108,7 +108,7 @@ export default function Workbench({ onNavigate }: { onNavigate: (k: NavKey) => v
                 return (
                   <button key={p.id} onClick={() => setDrawer(p.id)} className="group flex w-full items-start gap-3 px-4 py-3 text-left transition hover:bg-slate-50/80">
                     <div className={cn(
-                      'mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-semibold',
+                      'mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] text-xs font-semibold',
                       p.risk === 'high' ? 'bg-rose-50 text-rose-600' : p.risk === 'mid' ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600',
                     )}>
                       {p.name.slice(0, 1)}
@@ -223,7 +223,7 @@ export default function Workbench({ onNavigate }: { onNavigate: (k: NavKey) => v
             const Icon = q.icon
             return (
               <button key={q.k} onClick={() => onNavigate(q.k)} className="card group flex items-center gap-3 p-3.5 text-left transition hover:-translate-y-0.5 hover:shadow-float">
-                <span className={cn('flex h-9 w-9 items-center justify-center rounded-lg', q.tone)}><Icon className="h-4 w-4" /></span>
+                <span className={cn('flex h-9 w-9 items-center justify-center rounded-[2px]', q.tone)}><Icon className="h-4 w-4" /></span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[13px] font-semibold text-slate-800">{q.t}</p>
                   <p className="truncate text-[11px] text-slate-500">{q.d}</p>

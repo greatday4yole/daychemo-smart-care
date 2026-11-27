@@ -69,7 +69,7 @@ export default function Knowledge({ onNavigate }: { onNavigate: (k: NavKey) => v
 
         {tab === 'kb' && (
           <>
-            <div className="rounded-xl bg-brand-50/70 px-3.5 py-2.5 text-[11px] leading-relaxed text-brand-900">
+            <div className="rounded-[2px] bg-brand-50/70 px-3.5 py-2.5 text-[11px] leading-relaxed text-brand-900">
               <ShieldCheck className="mr-1 inline h-3 w-3" />
               AI 应答严格限定在本知识库范围内：<strong>仅做宣教指引与风险分流</strong>，命中“转人工”或“急症引导”边界时强制转人工或引导急诊，不生成诊疗方案。
             </div>
@@ -187,7 +187,7 @@ export default function Knowledge({ onNavigate }: { onNavigate: (k: NavKey) => v
                 </select>
               </label>
             </div>
-            <div className="rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
+            <div className="rounded-[2px] bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
               请确保内容符合医院宣教口径；涉及药物剂量、方案调整、预后判断的问题应设为“转人工”。
             </div>
           </div>

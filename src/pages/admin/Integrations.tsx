@@ -96,7 +96,7 @@ export default function Integrations({ onNavigate }: { onNavigate: (k: NavKey) =
             const Icon = s.i
             return (
               <div key={s.l} className="card flex items-center gap-3 p-3.5">
-                <span className={cn('flex h-9 w-9 items-center justify-center rounded-lg',
+                <span className={cn('flex h-9 w-9 items-center justify-center rounded-[2px]',
                   s.t === 'emerald' ? 'bg-emerald-50 text-emerald-600' : s.t === 'brand' ? 'bg-brand-50 text-brand-700' : s.t === 'amber' ? 'bg-amber-50 text-amber-600' : 'bg-slate-100 text-slate-500')}>
                   <Icon className="h-4 w-4" />
                 </span>

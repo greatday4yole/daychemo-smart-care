@@ -1,11 +1,12 @@
 import React from 'react'
 import {
-  Activity, AlarmClock, BadgeCheck, BarChart3, Bell, ClipboardList, Database, FileText,
-  HeartPulse, LayoutDashboard, LogOut, MessageSquareHeart, Phone, Settings2, ShieldCheck, Stethoscope, Users,
+  Activity, BarChart3, Bell, ClipboardList, Database, HeartPulse, LayoutDashboard, LogOut,
+  MessageSquareHeart, Phone, Settings2, ShieldCheck, Stethoscope, UserRound,
 } from 'lucide-react'
 import { useApp, setSession, roleText } from '../store/app'
 import type { Role } from '../types'
 import { cn, Badge } from '../components/ui'
+import { BrandLogo, TopBar, SiteFooter } from '../components/Brand'
 
 export type NavKey =
   | 'workbench' | 'monitor' | 'assess' | 'followup' | 'adr' | 'qc' | 'config' | 'kb' | 'audit' | 'integrations'
@@ -43,128 +44,138 @@ export const AppShell = ({
   const nav = NAV.filter((n) => n.roles.includes(role))
   const groups = [...new Set(nav.map((n) => n.group))]
   const unread = state.notifications.filter((n) => !n.read && (n.targetRole === 'all' || n.targetRole.includes(role))).length
+  const current = nav.find((n) => n.key === active)
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      {/* 侧栏 */}
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-slate-200 bg-white lg:flex">
-        <div className="flex items-center gap-2.5 px-4 py-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-lg text-white">⚕</div>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-slate-900">日间化疗智慧照护</p>
-            <p className="text-[10px] uppercase tracking-wide text-slate-400">Smart Care Platform</p>
-          </div>
-        </div>
+    <div className="flex min-h-screen flex-col bg-white">
+      <TopBar />
 
-        <nav className="flex-1 space-y-4 overflow-y-auto px-2.5 pb-4">
-          {groups.map((g) => (
-            <div key={g}>
-              <p className="px-2.5 pb-1 text-[11px] font-semibold uppercase tracking-wider text-slate-400">{g}</p>
-              <div className="space-y-0.5">
-                {nav
-                  .filter((n) => n.group === g)
-                  .map((n) => {
-                    const Icon = n.icon
-                    const isActive = active === n.key
-                    return (
-                      <button
-                        key={n.key}
-                        onClick={() => onNavigate(n.key)}
-                        className={cn(
-                          'flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] transition',
-                          isActive ? 'bg-brand-50 font-semibold text-brand-800' : 'text-slate-600 hover:bg-slate-50',
-                        )}
-                      >
-                        <Icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-brand-600' : 'text-slate-400')} />
-                        <span className="truncate">{n.label}</span>
-                        {n.key === 'adr' && state.adrs.some((a) => a.status !== 'closed') && (
-                          <span className="ml-auto rounded-full bg-rose-100 px-1.5 text-[10px] font-semibold text-rose-600">
-                            {state.adrs.filter((a) => a.status !== 'closed').length}
-                          </span>
-                        )}
-                      </button>
-                    )
-                  })}
-              </div>
-            </div>
-          ))}
-        </nav>
-
-        <div className="border-t border-slate-100 p-3">
-          <button
-            onClick={() => { window.location.hash = '#/patient' }}
-            className="mb-2 flex w-full items-center gap-2 rounded-lg bg-rose-50 px-2.5 py-2 text-[13px] font-medium text-rose-700 hover:bg-rose-100"
-            title="需切换至患者端"
-          >
-            <MessageSquareHeart className="h-4 w-4" />
-            查看患者端
-          </button>
-          <div className="flex items-center gap-2 rounded-lg px-2 py-1.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-600">
-              {state.userName.slice(0, 1) || roleText(role).slice(0, 1)}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-medium text-slate-800">{state.userName || roleText(role)}</p>
-              <p className="text-[10px] text-slate-400">{roleText(role)}</p>
-            </div>
-            <button onClick={() => setSession(null)} className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600" title="退出登录">
-              <LogOut className="h-3.5 w-3.5" />
+      {/* 主标题区：院徽 + 系统名 + 操作 */}
+      <header className="border-b border-[#e6ecf3] bg-white">
+        <div className="mx-auto flex max-w-[1560px] flex-wrap items-center gap-3 px-4 py-3 lg:px-6">
+          <BrandLogo size="md" className="mr-auto" />
+          <div className="hidden items-center gap-2 md:flex">{actions}</div>
+          <div className="flex items-center gap-1.5">
+            <button onClick={() => onNavigate('workbench')} className="relative rounded-[2px] p-2 text-slate-500 hover:bg-slate-100" aria-label="通知">
+              <Bell className="h-4 w-4" />
+              {unread > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-500 px-1 text-[10px] font-semibold text-white">
+                  {unread > 9 ? '9+' : unread}
+                </span>
+              )}
+            </button>
+            <span className="hidden items-center gap-1.5 border-l border-slate-200 pl-3 text-xs text-slate-600 lg:flex">
+              <UserRound className="h-3.5 w-3.5 text-brand-600" />
+              {state.userName || roleText(role)}
+              <Badge tone="brand">{roleText(role)}</Badge>
+            </span>
+            <button onClick={() => setSession(null)} className="rounded-[2px] p-2 text-slate-500 hover:bg-slate-100" aria-label="退出登录" title="退出登录">
+              <LogOut className="h-4 w-4" />
             </button>
           </div>
         </div>
-      </aside>
+      </header>
 
-      {/* 内容区 */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        {/* 顶部栏 */}
-        <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/85 backdrop-blur">
-          <div className="flex items-center gap-3 px-4 py-3 lg:px-6">
-            <div className="min-w-0 flex-1">
-              <h1 className="truncate text-[15px] font-semibold text-slate-900 lg:text-base">{title}</h1>
-              {subtitle && <p className="truncate text-[11px] text-slate-500 lg:text-xs">{subtitle}</p>}
+      <div className="mx-auto flex w-full max-w-[1560px] flex-1 flex-col lg:flex-row">
+        {/* 侧栏 */}
+        <aside className="hidden w-[228px] shrink-0 border-r border-[#e6ecf3] bg-[#f7f9fc] lg:block">
+          <div className="sticky top-0 flex h-[calc(100vh-32px)] flex-col overflow-y-auto">
+            <div className="heading-block">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              {role === 'qc' ? '质控工作区' : role === 'admin' ? '系统管理' : '临床照护工作区'}
             </div>
-            <div className="hidden items-center gap-2 md:flex">{actions}</div>
-            <div className="flex items-center gap-1.5">
-              <div className="relative">
-                <button
-                  onClick={() => onNavigate('workbench')}
-                  className="relative rounded-lg p-2 text-slate-500 hover:bg-slate-100"
-                  aria-label="通知"
-                >
-                  <Bell className="h-4 w-4" />
-                  {unread > 0 && (
-                    <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-semibold text-white">
-                      {unread > 9 ? '9+' : unread}
-                    </span>
-                  )}
-                </button>
-              </div>
-              <Badge tone="brand" className="hidden lg:inline-flex">
-                <ShieldCheck className="h-3 w-3" /> {roleText(role)}权限
-              </Badge>
-              <button onClick={() => setSession(null)} className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden" aria-label="退出">
-                <LogOut className="h-4 w-4" />
+            <nav className="flex-1 overflow-y-auto py-3">
+              {groups.map((g) => (
+                <div key={g} className="mb-3">
+                  <p className="px-4 pb-1.5 text-[11px] font-semibold tracking-wide text-slate-400">{g}</p>
+                  <div>
+                    {nav
+                      .filter((n) => n.group === g)
+                      .map((n) => {
+                        const Icon = n.icon
+                        const isActive = active === n.key
+                        return (
+                          <button
+                            key={n.key}
+                            onClick={() => onNavigate(n.key)}
+                            className={cn(
+                              'flex w-full items-center gap-2.5 border-l-[3px] px-4 py-[9px] text-left text-[13px] transition',
+                              isActive
+                                ? 'border-brand-600 bg-white font-semibold text-brand-700'
+                                : 'border-transparent text-slate-600 hover:bg-white/70 hover:text-brand-700',
+                            )}
+                          >
+                            <Icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-brand-600' : 'text-slate-400')} />
+                            <span className="truncate">{n.label}</span>
+                            {n.key === 'adr' && state.adrs.some((a) => a.status !== 'closed') && (
+                              <span className="ml-auto rounded-[2px] bg-accent-50 px-1.5 text-[10px] font-semibold text-accent-600">
+                                {state.adrs.filter((a) => a.status !== 'closed').length}
+                              </span>
+                            )}
+                          </button>
+                        )
+                      })}
+                  </div>
+                </div>
+              ))}
+            </nav>
+            <div className="space-y-1.5 border-t border-[#e6ecf3] p-3">
+              <button
+                onClick={() => { window.location.hash = '#/patient' }}
+                className="flex w-full items-center gap-2 border border-brand-200 bg-white px-2.5 py-2 text-[12px] font-medium text-brand-700 hover:bg-brand-50"
+              >
+                <MessageSquareHeart className="h-3.5 w-3.5" />
+                查看患者端
+              </button>
+              <button
+                onClick={() => { window.location.hash = '#/bedside' }}
+                className="flex w-full items-center gap-2 border border-[#dde5ef] bg-white px-2.5 py-2 text-[12px] text-slate-600 hover:border-brand-300 hover:text-brand-700"
+              >
+                <Activity className="h-3.5 w-3.5" />
+                查看床头端
               </button>
             </div>
           </div>
+        </aside>
+
+        {/* 内容区 */}
+        <main className="min-w-0 flex-1 bg-white">
+          <div className="border-b border-[#e6ecf3] px-4 pb-3 pt-4 lg:px-6">
+            <p className="text-[11px] text-slate-400">
+              首页 <span className="mx-1 text-slate-300">·</span> {current?.group ?? '临床照护'}
+              <span className="mx-1 text-slate-300">·</span>
+              <span className="text-slate-600">{current?.label ?? title}</span>
+            </p>
+            <div className="mt-1.5 flex flex-wrap items-end justify-between gap-2">
+              <div className="min-w-0">
+                <h1 className="heading-bar text-[17px] lg:text-[19px]">{title}</h1>
+                {subtitle && <p className="mt-1 pl-3.5 text-[11px] text-slate-500 lg:text-xs">{subtitle}</p>}
+              </div>
+              <div className="flex items-center gap-2 md:hidden">{actions}</div>
+            </div>
+          </div>
+
           {/* 移动端导航 */}
-          <div className="flex gap-1 overflow-x-auto px-3 pb-2 lg:hidden">
+          <div className="flex gap-1 overflow-x-auto border-b border-[#e6ecf3] bg-[#f7f9fc] px-3 py-2 lg:hidden">
             {nav.map((n) => (
               <button
                 key={n.key}
                 onClick={() => onNavigate(n.key)}
                 className={cn(
-                  'whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium',
-                  active === n.key ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600',
+                  'whitespace-nowrap rounded-[2px] px-2.5 py-1 text-xs font-medium',
+                  active === n.key ? 'bg-brand-600 text-white' : 'border border-[#e0e6ee] bg-white text-slate-600',
                 )}
               >
                 {n.label}
               </button>
             ))}
           </div>
-        </header>
-        <main className="flex-1 px-4 py-4 lg:px-6 lg:py-5">{children}</main>
+
+          <div className="px-4 py-4 lg:px-6 lg:py-5">{children}</div>
+        </main>
       </div>
+
+      <SiteFooter />
     </div>
   )
 }

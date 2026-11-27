@@ -55,7 +55,7 @@ seen('M3-5 宣教素材库（患者端）', true)
 await p.screenshot({ path: `${OUT}/m3.png`, fullPage: true })
 
 // 模块6
-await p.locator('aside').getByTitle('退出登录').click(); await p.waitForTimeout(500)
+await p.getByRole('button', { name: '退出登录' }).first().click(); await p.waitForTimeout(500)
 await p.getByText('张海燕').first().click(); await p.waitForTimeout(600)
 await p.locator('aside nav button', { hasText: '质控与数据统计' }).first().click(); await p.waitForTimeout(600)
 seen('M6-1 六项自动统计', (await p.locator('text=风险评估完成率').count()) > 0 && (await p.locator('text=宣教覆盖率').count()) > 0)

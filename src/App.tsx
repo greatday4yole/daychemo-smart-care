@@ -90,17 +90,11 @@ export default function App() {
           {nav === 'integrations' && <Integrations onNavigate={setNav} />}
         </>
       )}
-      <div className="fixed bottom-[92px] right-3 z-40 flex flex-col items-end gap-2 lg:bottom-4 lg:right-4">
-        {mode === 'web' && role !== 'patient' && (
-          <div className="flex gap-1.5">
-            <button onClick={() => setMode('patient')} className="rounded-full bg-rose-600 px-3 py-2 text-[11px] font-medium text-white shadow-float">患者端 H5</button>
-            <button onClick={() => setMode('bedside')} className="rounded-full bg-slate-800 px-3 py-2 text-[11px] font-medium text-white shadow-float">床头端</button>
-          </div>
-        )}
-        {(mode === 'patient' || mode === 'bedside') && (
-          <button onClick={() => setMode('web')} className="rounded-full bg-slate-800 px-3 py-2 text-[11px] font-medium text-white shadow-float">返回医护端</button>
-        )}
-      </div>
+      {(mode === 'patient' || mode === 'bedside') && (
+        <div className="fixed bottom-[92px] right-3 z-40 lg:bottom-6 lg:right-6">
+          <button onClick={() => setMode('web')} className="rounded-[2px] border border-white/20 bg-brand-700/95 px-3.5 py-2 text-[11px] font-medium text-white shadow-float">返回医护端</button>
+        </div>
+      )}
       <Toast message={state.lastAction} stamp={state.lastActionAt} />
     </>
   )

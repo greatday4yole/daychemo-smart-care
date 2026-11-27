@@ -105,7 +105,7 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
           <div className="flex items-center gap-1 overflow-x-auto">
             {FLOW.map((f, i) => (
               <React.Fragment key={f}>
-                <div className="flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-50 px-2.5 py-1.5">
+                <div className="flex shrink-0 items-center gap-1.5 rounded-[2px] bg-slate-50 px-2.5 py-1.5">
                   <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand-600 text-[10px] font-semibold text-white">{i + 1}</span>
                   <span className="text-[11px] font-medium text-slate-700">{f}</span>
                 </div>
@@ -132,7 +132,7 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
               const meta = STATUS_META[a.status]
               return (
                 <button key={a.id} onClick={() => setDetail(a.id)} className="flex w-full flex-wrap items-center gap-3 px-4 py-3 text-left hover:bg-slate-50">
-                  <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
+                  <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px]',
                     a.grade >= 3 ? 'bg-rose-100 text-rose-600' : a.grade === 2 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-500')}>
                     <HeartPulse className="h-4 w-4" />
                   </div>
@@ -173,7 +173,7 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
           </div>
           <div className="grid gap-2 p-3 sm:grid-cols-2 lg:grid-cols-3">
             {SOPS.map((s) => (
-              <button key={s.id} onClick={() => setSopOpen(s.id)} className="rounded-lg border border-slate-200 px-3 py-2.5 text-left transition hover:bg-slate-50">
+              <button key={s.id} onClick={() => setSopOpen(s.id)} className="rounded-[2px] border border-slate-200 px-3 py-2.5 text-left transition hover:bg-slate-50">
                 <div className="flex items-center gap-1.5">
                   <Badge tone={s.category === '过敏反应' ? 'rose' : s.category === '骨髓抑制' ? 'amber' : s.category === '感染' ? 'violet' : 'slate'}>{s.category}</Badge>
                   {s.grade > 0 && <Badge tone="slate">{s.grade} 级</Badge>}
@@ -190,7 +190,7 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
       <Modal open={!!current} onClose={() => setDetail(null)} title="ADR 处置追踪" width="max-w-3xl">
         {current && (
           <div className="space-y-4">
-            <div className="flex flex-wrap items-center gap-2 rounded-lg bg-slate-50 px-3 py-2.5">
+            <div className="flex flex-wrap items-center gap-2 rounded-[2px] bg-slate-50 px-3 py-2.5">
               <span className="text-sm font-semibold text-slate-900">{current.term}</span>
               <GradeBadge grade={current.grade} />
               <Badge tone={STATUS_META[current.status].tone}>{STATUS_META[current.status].label}</Badge>
@@ -199,7 +199,7 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
             </div>
 
             {term && (
-              <div className="rounded-lg border border-violet-100 bg-violet-50/60 px-3 py-2.5">
+              <div className="rounded-[2px] border border-violet-100 bg-violet-50/60 px-3 py-2.5">
                 <p className="text-[11px] font-semibold text-violet-800">CTCAE 分级对照</p>
                 <p className="mt-0.5 text-xs text-violet-900">{current.grade} 级：{termSummary(term, current.grade)}</p>
                 <p className="mt-1 text-[10px] text-violet-700">{term.note}</p>
@@ -209,7 +209,7 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
             {currentSop && (
               <div>
                 <p className="section-title mb-1.5 flex items-center gap-1.5"><Stethoscope className="h-3.5 w-3.5 text-brand-600" />自动推送处置 SOP：{currentSop.title}</p>
-                <div className="space-y-2 rounded-lg border border-slate-200 p-3">
+                <div className="space-y-2 rounded-[2px] border border-slate-200 p-3">
                   <div>
                     <p className="text-[11px] font-semibold text-slate-500">处置步骤</p>
                     <ol className="mt-1 space-y-1">
@@ -279,7 +279,7 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
               </div>
             )}
             {current.status === 'closed' && (
-              <div className="rounded-lg bg-emerald-50 px-3 py-2 text-[11px] text-emerald-700">
+              <div className="rounded-[2px] bg-emerald-50 px-3 py-2 text-[11px] text-emerald-700">
                 <CheckCircle2 className="mr-1 inline h-3 w-3" />该事件已于 {current.closedAt?.slice(0, 16).replace('T', ' ')} 闭环，共 {current.timeline.length} 条处置记录，已进入 HFMEA 分析数据集。
               </div>
             )}
@@ -299,7 +299,7 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
                 {s.grade > 0 && <Badge tone="slate">适用 {s.grade} 级</Badge>}
                 <Badge tone="slate">{s.id}</Badge>
               </div>
-              <div className="rounded-lg bg-slate-50 px-3 py-2">
+              <div className="rounded-[2px] bg-slate-50 px-3 py-2">
                 <p className="text-[11px] font-semibold text-slate-500">触发条件</p>
                 <p className="text-xs text-slate-700">{s.trigger}</p>
               </div>
@@ -314,15 +314,15 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
                 </ol>
               </div>
               <div className="grid gap-2 sm:grid-cols-2">
-                <div className="rounded-lg bg-sky-50 px-3 py-2">
+                <div className="rounded-[2px] bg-sky-50 px-3 py-2">
                   <p className="text-[11px] font-semibold text-sky-700">医嘱参考</p>
                   <ul className="mt-1 space-y-0.5">{s.orders.map((o) => <li key={o} className="text-[11px] text-sky-800">· {o}</li>)}</ul>
                 </div>
-                <div className="rounded-lg bg-emerald-50 px-3 py-2">
+                <div className="rounded-[2px] bg-emerald-50 px-3 py-2">
                   <p className="text-[11px] font-semibold text-emerald-700">复查要求</p>
                   <p className="text-[11px] text-emerald-800">{s.recheck}</p>
                 </div>
-                <div className="rounded-lg bg-rose-50 px-3 py-2 sm:col-span-2">
+                <div className="rounded-[2px] bg-rose-50 px-3 py-2 sm:col-span-2">
                   <p className="text-[11px] font-semibold text-rose-700">升级条件</p>
                   <p className="text-[11px] text-rose-800">{s.escalate}</p>
                 </div>
@@ -360,7 +360,7 @@ export default function Adr({ onNavigate }: { onNavigate: (k: NavKey) => void })
           </label>
           {(() => {
             const t = CTCAE_TERMS.find((x) => x.id === selTerm)
-            return t ? <div className="rounded-lg bg-violet-50 px-3 py-2 text-[11px] text-violet-800">{selGrade} 级标准：{termSummary(t, selGrade)}</div> : null
+            return t ? <div className="rounded-[2px] bg-violet-50 px-3 py-2 text-[11px] text-violet-800">{selGrade} 级标准：{termSummary(t, selGrade)}</div> : null
           })()}
         </div>
       </Modal>

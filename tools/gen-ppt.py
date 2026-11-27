@@ -7,16 +7,16 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 
 W, H = Inches(13.333), Inches(7.5)
-BRAND = RGBColor(0x0E, 0x8F, 0x92)
-BRAND_D = RGBColor(0x10, 0x4A, 0x4E)
-BRAND_L = RGBColor(0xE6, 0xF6, 0xF5)
+BRAND = RGBColor(0x00, 0x45, 0x89)
+BRAND_D = RGBColor(0x00, 0x33, 0x66)
+BRAND_L = RGBColor(0xEE, 0xF4, 0xFB)
 INK = RGBColor(0x1E, 0x29, 0x3B)
 INK2 = RGBColor(0x47, 0x55, 0x69)
 MUTED = RGBColor(0x94, 0xA3, 0xB8)
 WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 BG = RGBColor(0xF8, 0xFA, 0xFC)
 AMBER = RGBColor(0xD9, 0x77, 0x06)
-ROSE = RGBColor(0xBE, 0x12, 0x3C)
+ROSE = RGBColor(0xD0, 0x10, 0x27)
 EMER = RGBColor(0x05, 0x96, 0x69)
 FONT = "Microsoft YaHei"
 
@@ -79,7 +79,7 @@ def header(slide, kicker, title, sub=None):
     rect(slide, Inches(0.75), Inches(1.78), Inches(0.62), Inches(0.055), BRAND)
 
 
-def footer(slide, n, label="日间化疗患者智慧照护系统 · 培训"):
+def footer(slide, n, label="上海长海医院 · 肿瘤内科日间化疗中心 ｜ 智慧照护系统培训"):
     text(slide, Inches(0.75), H - Inches(0.52), Inches(8), Inches(0.28), label, 9, MUTED)
     text(slide, W - Inches(1.3), H - Inches(0.52), Inches(0.6), Inches(0.28), str(n), 9, MUTED, align=PP_ALIGN.RIGHT)
 
@@ -125,17 +125,22 @@ def table(slide, x, y, w, rows, col_w, header_row=True, size=10.5, row_h=Inches(
 s = prs.slides.add_slide(BLANK)
 bg(s, BRAND_D)
 rect(s, 0, 0, Inches(13.333), Inches(0.12), BRAND)
-blob = rect(s, Inches(9.1), Inches(-1.3), Inches(6.2), Inches(6.2), RGBColor(0x0B, 0x3A, 0x3D), None, 0.5)
-blob2 = rect(s, Inches(10.4), Inches(3.2), Inches(4.2), Inches(4.2), RGBColor(0x12, 0x5B, 0x5F), None, 0.5)
-text(s, Inches(0.95), Inches(1.35), Inches(7.5), Inches(0.3), "DAY-CHEMO SMART CARE PLATFORM", 11.5, RGBColor(0x7B, 0xE2, 0xE0), True)
-text(s, Inches(0.9), Inches(1.78), Inches(8.2), Inches(1.5), "日间化疗患者\n智慧照护系统", 40, WHITE, True, line_spacing=1.1)
+blob = rect(s, Inches(9.1), Inches(-1.3), Inches(6.2), Inches(6.2), RGBColor(0x00, 0x28, 0x50), None, 0.5)
+blob2 = rect(s, Inches(10.4), Inches(3.2), Inches(4.2), Inches(4.2), RGBColor(0x00, 0x3D, 0x7A), None, 0.5)
+try:
+    s.shapes.add_picture("public/brand/logo-changhai-light.png", Inches(0.95), Inches(0.62), height=Inches(0.62))
+    pass
+except Exception:
+    pass
+text(s, Inches(0.95), Inches(1.42), Inches(7.5), Inches(0.3), "DAY-CHEMO SMART CARE PLATFORM", 11.5, RGBColor(0xB2, 0xC7, 0xDB), True)
+text(s, Inches(0.9), Inches(1.85), Inches(8.2), Inches(1.5), "日间化疗患者\n智慧照护系统", 40, WHITE, True, line_spacing=1.1)
 rect(s, Inches(0.95), Inches(3.55), Inches(708000), Inches(0.06), BRAND)
 text(s, Inches(0.95), Inches(3.82), Inches(7.6), Inches(0.9),
-     "化疗前风险评估 · 化疗中实时监控 · 化疗后居家随访\nAI 语音提醒 ｜ CTCAE 自动分级 ｜ ADR 闭环处置 ｜ 质控可追溯", 13, RGBColor(0xD6, 0xF7, 0xF5), line_spacing=1.5)
+     "化疗前风险评估 · 化疗中实时监控 · 化疗后居家随访\nAI 语音提醒 ｜ CTCAE 自动分级 ｜ ADR 闭环处置 ｜ 质控可追溯", 13, RGBColor(0xDB, 0xE7, 0xF6), line_spacing=1.5)
 for i, t in enumerate(["流程闭环", "AI 语音交互", "风险前置管控", "HFMEA 落地"]):
-    pill(s, Inches(0.95) + Inches(1.42) * i, Inches(5.02), Inches(1.32), Inches(0.4), t, RGBColor(0x12, 0x5B, 0x5F), RGBColor(0x7B, 0xE2, 0xE0))
-text(s, Inches(0.95), Inches(6.28), Inches(8), Inches(0.3), "系统操作与临床应用培训 ｜ 护理团队 + 质控团队 ｜ 2 学时", 11, RGBColor(0x9E, 0xD8, 0xD7))
-text(s, Inches(0.95), Inches(6.62), Inches(8), Inches(0.3), "演示环境：greatday4yole.github.io/daychemo-smart-care  ·  数据为虚构演示数据", 9.5, RGBColor(0x6E, 0xB8, 0xB7))
+    pill(s, Inches(0.95) + Inches(1.42) * i, Inches(5.02), Inches(1.32), Inches(0.4), t, RGBColor(0x00, 0x3D, 0x7A), RGBColor(0xB2, 0xC7, 0xDB))
+text(s, Inches(0.95), Inches(6.28), Inches(8), Inches(0.3), "系统操作与临床应用培训 ｜ 护理团队 + 质控团队 ｜ 2 学时", 11, RGBColor(0x8F, 0xB3, 0xD9))
+text(s, Inches(0.95), Inches(6.62), Inches(8), Inches(0.3), "演示环境：greatday4yole.github.io/daychemo-smart-care  ·  数据为虚构演示数据", 9.5, RGBColor(0x6E, 0x94, 0xBF))
 
 # ============ 2 目录 ============
 s = prs.slides.add_slide(BLANK)
@@ -265,7 +270,7 @@ bg(s)
 header(s, "02 / 角色", "五类角色与权限边界", "按最小必要原则；患者仅可见本人数据")
 roles = [
     ("医生", "ADR 处置与复评、医嘱参考、质控查看", BRAND),
-    ("护士", "风险评估、巡视打卡、床旁上报、随访干预", RGBColor(0x0F, 0x76, 0x6E)),
+    ("护士", "风险评估、巡视打卡、床旁上报、随访干预", RGBColor(0x00, 0x55, 0xA0)),
     ("护士长", "模板/宣教配置、看板、报表导出、审计", RGBColor(0x6D, 0x28, 0xD9)),
     ("质控员", "HFMEA / 品管圈导出、追溯核查（只读）", EMER),
     ("患者", "语音提醒、症状上报、AI 问答、宣教、随访打卡", ROSE),
@@ -295,14 +300,14 @@ card(s, Inches(0.78), Inches(2.15), Inches(3.8), Inches(1.95), 1, "标准化表�
      "5 维度 14 项：过敏与既往反应、骨髓抑制风险、基础疾病与器官功能、血管条件、营养支持。每条目带权重与 CTCAE 关联。")
 card(s, Inches(4.78), Inches(2.15), Inches(3.8), Inches(1.95), 2, "HIS 自动带入",
      "医嘱含 3 级高致敏 → 自动勾“高致敏方案”；含发泡剂/刺激性 → 自动勾对应项；年龄 ≥70 → 自动勾“高龄”。一点即应用。",
-     RGBColor(0x0F, 0x76, 0x6E))
+     RGBColor(0x00, 0x55, 0xA0))
 card(s, Inches(8.78), Inches(2.15), Inches(3.8), Inches(1.95), 3, "CTCAE 即时对照",
      "勾选条目旁紫色 CTCAE 徽标，点击即阅 1–4 级标准与临床提示，评估时无需另开手册。", RGBColor(0x6D, 0x28, 0xD9))
 card(s, Inches(0.78), Inches(4.32), Inches(3.8), Inches(1.95), 4, "知情同意前置",
      "未勾选“已告知风险并签署”时，提交按钮禁用，避免流程跳步。", AMBER)
 card(s, Inches(4.78), Inches(4.32), Inches(3.8), Inches(1.95), 5, "自动生成计划",
      "提交后按等级自动生成随访：低危 1 条 / 中危 3 条 / 高危 5 条；并生成个体化宣教清单推送到患者端。",
-     RGBColor(0x0F, 0x76, 0x6E), AMBER)
+     RGBColor(0x00, 0x55, 0xA0), AMBER)
 card(s, Inches(8.78), Inches(4.32), Inches(3.8), Inches(1.95), 6, "存档与调阅",
      "评估自动归档（时间/评分/等级/标签/CTCAE 关联/同步状态），历史评估随时回看，同步护理记录。", EMER)
 footer(s, 8)
@@ -325,14 +330,14 @@ for i, (t, d) in enumerate(left):
     text(s, Inches(3.12), y + Inches(0.11), Inches(4.62), Inches(0.62), d, 9.5, INK2, line_spacing=1.25)
 # 右：监护阈值卡
 rect(s, Inches(8.2), Inches(2.18), Inches(4.38), Inches(4.42), BRAND_D, None, 0.06)
-text(s, Inches(8.45), Inches(2.36), Inches(3.9), Inches(0.3), "监护 / 输液泵阈值（演示）", 11, RGBColor(0x7B, 0xE2, 0xE0), True)
+text(s, Inches(8.45), Inches(2.36), Inches(3.9), Inches(0.3), "监护 / 输液泵阈值（演示）", 11, RGBColor(0xB2, 0xC7, 0xDB), True)
 vitals = [("体温", "≥ 38.0 ℃", ROSE), ("心率", "> 110 bpm", AMBER), ("收缩压", "< 90 mmHg", ROSE), ("血氧", "< 94 %", ROSE), ("泵速/余量", "按医嘱核对", BRAND)]
 for i, (k, v, c) in enumerate(vitals):
     y = Inches(2.85) + Inches(0.62) * i
-    text(s, Inches(8.45), y, Inches(1.6), Inches(0.3), k, 10.5, RGBColor(0xD6, 0xF7, 0xF5))
+    text(s, Inches(8.45), y, Inches(1.6), Inches(0.3), k, 10.5, RGBColor(0xDB, 0xE7, 0xF6))
     text(s, Inches(10.1), y, Inches(2.2), Inches(0.3), v, 12, WHITE, True)
     rect(s, Inches(8.45), y + Inches(0.36), Inches(3.86), Inches(0.014), c)
-text(s, Inches(8.45), Inches(6.05), Inches(3.9), Inches(0.4), "命中任一阈值即触发床旁弹窗与护士站推送", 9, RGBColor(0x9E, 0xD8, 0xD7))
+text(s, Inches(8.45), Inches(6.05), Inches(3.9), Inches(0.4), "命中任一阈值即触发床旁弹窗与护士站推送", 9, RGBColor(0x8F, 0xB3, 0xD9))
 footer(s, 9)
 
 # ============ 10 模块3/4 随访与AI ============
@@ -411,12 +416,12 @@ rows = [["报表", "内容", "用途"],
         ["操作审计", "全量操作留痕（只追加）", "等保审计与责任追溯"]]
 table(s, Inches(0.78), Inches(3.42), Inches(7.6), rows, [Inches(1.5), Inches(3.6), Inches(2.5)], size=9.5, row_h=Inches(0.55))
 rect(s, Inches(8.62), Inches(3.42), Inches(3.96), Inches(2.75), BRAND_D, None, 0.05)
-text(s, Inches(8.86), Inches(3.58), Inches(3.5), Inches(0.3), "三栏风险看板（实时）", 11, RGBColor(0x7B, 0xE2, 0xE0), True)
+text(s, Inches(8.86), Inches(3.58), Inches(3.5), Inches(0.3), "三栏风险看板（实时）", 11, RGBColor(0xB2, 0xC7, 0xDB), True)
 for i, t in enumerate(["高危患者（红色置顶）", "指标异常（ANC/PLT 低）", "迟访 / 漏访患者"]):
     y = Inches(3.98) + Inches(0.66) * i
-    rect(s, Inches(8.86), y, Inches(3.5), Inches(0.5), RGBColor(0x12, 0x5B, 0x5F), None, 0.12)
+    rect(s, Inches(8.86), y, Inches(3.5), Inches(0.5), RGBColor(0x00, 0x3D, 0x7A), None, 0.12)
     text(s, Inches(9.0), y + Inches(0.11), Inches(3.2), Inches(0.3), f"{i+1}. {t}", 9.5, WHITE)
-text(s, Inches(8.86), Inches(5.98), Inches(3.5), Inches(0.3), "护士长 / 质控员视角，支持导出 CSV / JSON", 8.5, RGBColor(0x9E, 0xD8, 0xD7))
+text(s, Inches(8.86), Inches(5.98), Inches(3.5), Inches(0.3), "护士长 / 质控员视角，支持导出 CSV / JSON", 8.5, RGBColor(0x8F, 0xB3, 0xD9))
 footer(s, 12)
 
 # ============ 13 患者端演示路径 ============
@@ -437,15 +442,15 @@ for i, (n, t, d) in enumerate(steps):
     text(s, Inches(1.42), y + Inches(0.09), Inches(1.7), Inches(0.3), t, 10.5, INK, True)
     text(s, Inches(3.16), y + Inches(0.1), Inches(4.82), Inches(0.58), d, 9.2, INK2, line_spacing=1.2)
 rect(s, Inches(8.5), Inches(2.15), Inches(4.08), Inches(4.3), BRAND_D, None, 0.06)
-text(s, Inches(8.74), Inches(2.3), Inches(3.6), Inches(0.3), "扫码进入患者端", 11, RGBColor(0x7B, 0xE2, 0xE0), True)
+text(s, Inches(8.74), Inches(2.3), Inches(3.6), Inches(0.3), "扫码进入患者端", 11, RGBColor(0xB2, 0xC7, 0xDB), True)
 try:
     s.shapes.add_picture("docs/images/qr-patient.png", Inches(9.32), Inches(2.66), height=Inches(1.7))
-    text(s, Inches(8.74), Inches(4.44), Inches(3.6), Inches(0.28), "与学员手机同屏对照操作", 8.5, RGBColor(0x9E, 0xD8, 0xD7), align=PP_ALIGN.CENTER)
+    text(s, Inches(8.74), Inches(4.44), Inches(3.6), Inches(0.28), "与学员手机同屏对照操作", 8.5, RGBColor(0x8F, 0xB3, 0xD9), align=PP_ALIGN.CENTER)
 except Exception:
     pass
-text(s, Inches(8.74), Inches(4.78), Inches(3.6), Inches(0.3), "老年友好设计", 11, RGBColor(0x7B, 0xE2, 0xE0), True)
+text(s, Inches(8.74), Inches(4.78), Inches(3.6), Inches(0.3), "老年友好设计", 11, RGBColor(0xB2, 0xC7, 0xDB), True)
 for i, t in enumerate(["大字模式（字号 +18%、按钮 ≥56px）", "语音优先：可全程“说话”完成上报与提问", "10 个图标 + 表情，无需阅读长文", "高危症状红色大字 + 一键拨 120", "免打扰夜间静音，不打扰睡眠"]):
-    text(s, Inches(8.74), Inches(5.14) + Inches(0.26) * i, Inches(3.6), Inches(0.26), "· " + t, 8.2, RGBColor(0xD6, 0xF7, 0xF5), line_spacing=1.05)
+    text(s, Inches(8.74), Inches(5.14) + Inches(0.26) * i, Inches(3.6), Inches(0.26), "· " + t, 8.2, RGBColor(0xDB, 0xE7, 0xF6), line_spacing=1.05)
 text(s, Inches(0.78), Inches(6.62), Inches(11.8), Inches(0.3),
      "考核点：能否独立完成“听提醒 → 报症状 → 语音提问 → 转人工”四步（限时 3 分钟）", 10, MUTED)
 footer(s, 13)
@@ -456,7 +461,7 @@ bg(s)
 header(s, "06 / 实操", "医护端演示路径（8 分钟）", "护士 → 医生 → 护士长三角色串联")
 steps = [
     ("护士", "① 登录选“李晓梅” → 化疗前评估 → 勾选 3 项看分值变化 → 提交生成随访计划", BRAND),
-    ("护士", "② 实时监控 → 张桂芳卡片“模拟采集” → 异常弹窗 → “床旁快速上报”2 级过敏", RGBColor(0x0F, 0x76, 0x6E)),
+    ("护士", "② 实时监控 → 张桂芳卡片“模拟采集” → 异常弹窗 → “床旁快速上报”2 级过敏", RGBColor(0x00, 0x55, 0xA0)),
     ("医生", "③ 切“王建国” → 不良反应闭环 → 打开事件 → 看 SOP 与时间线 → 提交复评 → 闭环", RGBColor(0x1D, 0x4E, 0xD8)),
     ("护士", "④ 随访页 → 找到漏访患者 → “二次提醒” → “填写随访”保存完成", AMBER),
     ("护士长", "⑤ 切“张海燕” → 质控页 → 看四项完成率 → HFMEA RPN → 导出 CSV", RGBColor(0x6D, 0x28, 0xD9)),
@@ -513,19 +518,19 @@ footer(s, 16)
 s = prs.slides.add_slide(BLANK)
 bg(s, BRAND_D)
 rect(s, 0, 0, W, Inches(0.12), BRAND)
-text(s, Inches(0.95), Inches(1.15), Inches(7), Inches(0.35), "WRAP-UP", 11.5, RGBColor(0x7B, 0xE2, 0xE0), True)
+text(s, Inches(0.95), Inches(1.15), Inches(7), Inches(0.35), "WRAP-UP", 11.5, RGBColor(0xB2, 0xC7, 0xDB), True)
 text(s, Inches(0.9), Inches(1.55), Inches(8.6), Inches(0.9), "培训考核与持续改进", 34, WHITE, True)
 rect(s, Inches(0.95), Inches(2.55), Inches(0.7), Inches(0.06), BRAND)
 tasks = ["说出高危患者的 3 条自动联动动作", "独立完成一次床旁上报并解释 SOP 依据", "在患者端完成“听提醒→报症状→语音提问”三步", "导出一份 HFMEA 报表并指出 1 个优先改进项", "说明 AI 的三级边界与免责要求"]
-text(s, Inches(0.95), Inches(2.95), Inches(5.2), Inches(0.3), "考核任务（5 项，≥4 项通过）", 12, RGBColor(0x9E, 0xD8, 0xD7), True)
+text(s, Inches(0.95), Inches(2.95), Inches(5.2), Inches(0.3), "考核任务（5 项，≥4 项通过）", 12, RGBColor(0x8F, 0xB3, 0xD9), True)
 for i, t in enumerate(tasks):
-    text(s, Inches(0.95), Inches(3.38) + Inches(0.46) * i, Inches(5.4), Inches(0.4), f"{i+1}. {t}", 10.5, RGBColor(0xD6, 0xF7, 0xF5))
-rect(s, Inches(6.65), Inches(2.9), Inches(5.85), Inches(3.3), RGBColor(0x12, 0x5B, 0x5F), None, 0.06)
-text(s, Inches(6.9), Inches(3.06), Inches(5.3), Inches(0.3), "持续改进机制", 11.5, RGBColor(0x7B, 0xE2, 0xE0), True)
+    text(s, Inches(0.95), Inches(3.38) + Inches(0.46) * i, Inches(5.4), Inches(0.4), f"{i+1}. {t}", 10.5, RGBColor(0xDB, 0xE7, 0xF6))
+rect(s, Inches(6.65), Inches(2.9), Inches(5.85), Inches(3.3), RGBColor(0x00, 0x3D, 0x7A), None, 0.06)
+text(s, Inches(6.9), Inches(3.06), Inches(5.3), Inches(0.3), "持续改进机制", 11.5, RGBColor(0xB2, 0xC7, 0xDB), True)
 for i, t in enumerate(["每月质控例会：看 4 项完成率 + 延迟发现例数", "每季 SOP / 知识库版本评审", "每半年权重与阈值校准（用本院真实数据）", "问题反馈：GitHub Issues / 院内工单"]):
-    text(s, Inches(6.9), Inches(3.5) + Inches(0.55) * i, Inches(5.3), Inches(0.5), "· " + t, 9.5, RGBColor(0xD6, 0xF7, 0xF5), line_spacing=1.2)
+    text(s, Inches(6.9), Inches(3.5) + Inches(0.55) * i, Inches(5.3), Inches(0.5), "· " + t, 9.5, RGBColor(0xDB, 0xE7, 0xF6), line_spacing=1.2)
 text(s, Inches(0.95), Inches(6.5), Inches(11.4), Inches(0.35),
-     "演示地址：greatday4yole.github.io/daychemo-smart-care  ｜  患者端直达：#/patient  ｜  床头端直达：#/bedside", 10, RGBColor(0x9E, 0xD8, 0xD7))
+     "演示地址：greatday4yole.github.io/daychemo-smart-care  ｜  患者端直达：#/patient  ｜  床头端直达：#/bedside", 10, RGBColor(0x8F, 0xB3, 0xD9))
 
 prs.save("docs/日间化疗智慧照护系统-培训PPT.pptx")
 print("saved:", len(prs.slides.__iter__.__self__._sldIdLst), "slides")

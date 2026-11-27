@@ -70,7 +70,7 @@ export default function Config({ onNavigate }: { onNavigate: (k: NavKey) => void
 
         {tab === 'templates' && (
           <div className="space-y-3">
-            <div className="rounded-xl bg-brand-50/70 px-3.5 py-2.5 text-[11px] leading-relaxed text-brand-900">
+            <div className="rounded-[2px] bg-brand-50/70 px-3.5 py-2.5 text-[11px] leading-relaxed text-brand-900">
               <ShieldCheck className="mr-1 inline h-3 w-3" />
               按化疗时间轴自动触发：负值为化疗前（小时），正值为化疗开始后。所有内容须经肿瘤科专科医护审核入库后生效，AI 不自动生成诊疗内容。
             </div>
@@ -89,7 +89,7 @@ export default function Config({ onNavigate }: { onNavigate: (k: NavKey) => void
                   <div className="divide-y divide-slate-100">
                     {list.map((t) => (
                       <div key={t.id} className={cn('flex flex-wrap items-start gap-3 px-4 py-3', !t.enabled && 'opacity-60')}>
-                        <div className="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-slate-50 py-1.5">
+                        <div className="flex w-16 shrink-0 flex-col items-center justify-center rounded-[2px] bg-slate-50 py-1.5">
                           <span className="text-xs font-semibold text-slate-700 tnum">{t.offsetHours >= 0 ? '+' : ''}{t.offsetHours}h</span>
                           <span className="text-[9px] text-slate-400">{t.offsetHours < 0 ? '化疗前' : t.offsetHours < 24 ? '当日' : `第 ${Math.round(t.offsetHours / 24)} 天`}</span>
                         </div>
@@ -125,7 +125,7 @@ export default function Config({ onNavigate }: { onNavigate: (k: NavKey) => void
 
         {tab === 'education' && (
           <div className="space-y-3">
-            <div className="rounded-xl bg-brand-50/70 px-3.5 py-2.5 text-[11px] leading-relaxed text-brand-900">
+            <div className="rounded-[2px] bg-brand-50/70 px-3.5 py-2.5 text-[11px] leading-relaxed text-brand-900">
               宣教素材按化疗阶段、风险等级、形式（图文 / 短视频 / 语音）组织，患者端按风险精准推送。替代单一口头宣教，内容变更留版本记录。
             </div>
             {(['pre', 'during', 'post'] as const).map((phase) => {
@@ -303,12 +303,12 @@ export default function Config({ onNavigate }: { onNavigate: (k: NavKey) => void
                 <div className="mt-1 flex gap-1.5">
                   {[['push', '小程序推送'], ['voice', 'AI 语音'], ['sms', '短信']].map(([k, l]) => (
                     <button key={k} onClick={() => setEditTpl({ ...editTpl, channel: editTpl.channel.includes(k as any) ? editTpl.channel.filter((c) => c !== k) : [...editTpl.channel, k as any] })}
-                      className={cn('rounded-lg border px-2 py-1.5 text-[11px]', editTpl.channel.includes(k as any) ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-slate-200 text-slate-500')}>{l}</button>
+                      className={cn('rounded-[2px] border px-2 py-1.5 text-[11px]', editTpl.channel.includes(k as any) ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-slate-200 text-slate-500')}>{l}</button>
                   ))}
                 </div>
               </div>
             </div>
-            <div className="rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
+            <div className="rounded-[2px] bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
               保存后状态为“待审核”，需肿瘤科专科医护（护士长/医生）审核通过后才会实际推送给患者。
             </div>
           </div>

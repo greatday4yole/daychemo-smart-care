@@ -79,7 +79,7 @@ export default function Followup({ onNavigate }: { onNavigate: (k: NavKey) => vo
               return (
                 <div key={f.id} className={cn('flex flex-wrap items-start gap-3 px-4 py-3 transition', f.status === 'missed' && 'bg-rose-50/40', f.status === 'late' && 'bg-amber-50/30')}>
                   <button onClick={() => setDrawer(p.id)} className="flex min-w-0 flex-1 items-start gap-2.5 text-left">
-                    <div className={cn('mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-semibold',
+                    <div className={cn('mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-[2px] text-xs font-semibold',
                       f.status === 'missed' ? 'bg-rose-100 text-rose-600' : f.status === 'late' ? 'bg-amber-100 text-amber-600' : f.status === 'done' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500')}>
                       {p.name.slice(0, 1)}
                     </div>
@@ -203,7 +203,7 @@ export default function Followup({ onNavigate }: { onNavigate: (k: NavKey) => vo
             const p = f ? patientById(f.patientId) : null
             return f ? (
               <>
-                <div className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600">
+                <div className="rounded-[2px] bg-slate-50 px-3 py-2 text-xs text-slate-600">
                   <p><span className="text-slate-400">患者：</span>{p?.name} · {p?.regimen}</p>
                   <p className="mt-0.5"><span className="text-slate-400">任务：</span>{f.type} · 计划 {f.dueDate}</p>
                   {f.note && <p className="mt-0.5"><span className="text-slate-400">备注：</span>{f.note}</p>}
@@ -212,7 +212,7 @@ export default function Followup({ onNavigate }: { onNavigate: (k: NavKey) => vo
                   <span className="label">随访记录（已完成 / 迟访 / 漏访原因与处置）</span>
                   <textarea className="input mt-1 min-h-[110px]" value={note} onChange={(e) => setNote(e.target.value)} placeholder="例：电话回访已接通，患者体温 36.7℃，无发热、无出血，已复查血常规 ANC 2.1，嘱第 14 天再次复查。" />
                 </label>
-                <div className="rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
+                <div className="rounded-[2px] bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
                   提示：随访记录将自动进入质控台账，作为“随访完成率”与 HFMEA 追溯依据。
                 </div>
               </>

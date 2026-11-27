@@ -104,7 +104,7 @@ export default function Assess({ onNavigate }: { onNavigate: (k: NavKey) => void
                     setSubmitted(null)
                   }}
                   className={cn(
-                    'shrink-0 rounded-lg border px-3 py-2 text-left transition',
+                    'shrink-0 rounded-[2px] border px-3 py-2 text-left transition',
                     selected === p.id ? 'border-brand-300 bg-brand-50' : 'border-slate-200 bg-white hover:bg-slate-50',
                   )}
                 >
@@ -132,7 +132,7 @@ export default function Assess({ onNavigate }: { onNavigate: (k: NavKey) => void
               </div>
             </div>
             {autoItems.length > 0 && (
-              <div className="mt-2.5 rounded-lg bg-brand-50/70 px-3 py-2 text-[11px] leading-relaxed text-brand-900">
+              <div className="mt-2.5 rounded-[2px] bg-brand-50/70 px-3 py-2 text-[11px] leading-relaxed text-brand-900">
                 <span className="font-semibold">HIS 自动带入：</span>
                 {patient.infusion?.hypersensitivity === 3 && '本次方案含 3 级高致敏药物 → 自动勾选“高致敏方案”；'}
                 {patient.infusion && (patient.infusion.category === 'vesicant' || patient.infusion.category === 'irritant') && `本次方案含${patient.infusion.category === 'vesicant' ? '发泡剂' : '刺激性药物'}（${patient.infusion.drug}）→ 自动勾选“发泡剂/刺激性药物”；`}
@@ -161,7 +161,7 @@ export default function Assess({ onNavigate }: { onNavigate: (k: NavKey) => void
                         const checked = !!answers.find((a) => a.itemId === i.id && a.checked)
                         const isAuto = autoItems.includes(i.id)
                         return (
-                          <div key={i.id} className={cn('flex items-start gap-2 rounded-lg px-2 py-1.5 transition', checked ? 'bg-brand-50/60' : 'hover:bg-slate-50')}>
+                          <div key={i.id} className={cn('flex items-start gap-2 rounded-[2px] px-2 py-1.5 transition', checked ? 'bg-brand-50/60' : 'hover:bg-slate-50')}>
                             <button
                               onClick={() => toggle(i.id)}
                               className={cn(
@@ -295,7 +295,7 @@ export default function Assess({ onNavigate }: { onNavigate: (k: NavKey) => void
         {ctcaeOpen === '__index' ? (
           <div className="space-y-2">
             {CTCAE_TERMS.map((t) => (
-              <button key={t.id} onClick={() => setCtcaeOpen(t.id)} className="flex w-full items-center justify-between rounded-lg border border-slate-200 px-3 py-2.5 text-left hover:bg-slate-50">
+              <button key={t.id} onClick={() => setCtcaeOpen(t.id)} className="flex w-full items-center justify-between rounded-[2px] border border-slate-200 px-3 py-2.5 text-left hover:bg-slate-50">
                 <div>
                   <p className="text-sm font-medium text-slate-800">{t.term}</p>
                   <p className="text-[11px] text-slate-500">{t.note}</p>
@@ -310,7 +310,7 @@ export default function Assess({ onNavigate }: { onNavigate: (k: NavKey) => void
             if (!t) return <Empty title="未找到该分级条目" />
             return (
               <div className="space-y-3">
-                <div className="rounded-lg bg-violet-50 px-3 py-2">
+                <div className="rounded-[2px] bg-violet-50 px-3 py-2">
                   <p className="text-sm font-semibold text-violet-900">{t.term}</p>
                   <p className="mt-0.5 text-[11px] text-violet-700">{t.category} · CTCAE v5.0</p>
                 </div>
@@ -324,7 +324,7 @@ export default function Assess({ onNavigate }: { onNavigate: (k: NavKey) => void
                     </div>
                   )
                 })}
-                <div className="rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
+                <div className="rounded-[2px] bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
                   <span className="font-semibold">临床提示：</span>{t.note}
                 </div>
                 <button className="btn-ghost w-full" onClick={() => setCtcaeOpen('__index')}>返回全部条目</button>
@@ -339,7 +339,7 @@ export default function Assess({ onNavigate }: { onNavigate: (k: NavKey) => void
         footer={<button className="btn-primary w-full" onClick={() => setEduOpen(false)}>确认推送</button>}>
         <div className="space-y-2">
           {eduList.map((e) => (
-            <div key={e.id} className="rounded-lg border border-slate-200 px-3 py-2">
+            <div key={e.id} className="rounded-[2px] border border-slate-200 px-3 py-2">
               <div className="flex items-center justify-between gap-2">
                 <p className="text-xs font-medium text-slate-800">{e.title}</p>
                 <Badge tone={e.phase === 'pre' ? 'violet' : e.phase === 'during' ? 'amber' : 'emerald'}>{e.phase === 'pre' ? '化疗前' : e.phase === 'during' ? '化疗中' : '化疗后'}</Badge>
@@ -361,7 +361,7 @@ export default function Assess({ onNavigate }: { onNavigate: (k: NavKey) => void
               已完成 <span className="font-semibold">{patient.name}</span> 的风险评估，得分 <span className="font-semibold tnum">{submitted.score}</span> 分，
               判定为 <span className="font-semibold">{LEVEL_TEXT[submitted.level]}</span>。
             </p>
-            <div className="rounded-lg bg-slate-50 px-3 py-2 text-left text-[11px] leading-relaxed text-slate-600">
+            <div className="rounded-[2px] bg-slate-50 px-3 py-2 text-left text-[11px] leading-relaxed text-slate-600">
               · 评估结果已归档并同步护理记录<br />
               · 已按风险分层自动生成随访计划（{submitted.level === 'high' ? '第 3/5/7/10/14 天复查 + 24h 电话随访' : submitted.level === 'mid' ? '第 4/7/14 天复查' : '第 7 天复查'}）<br />
               · 个体化宣教清单已推送至患者端

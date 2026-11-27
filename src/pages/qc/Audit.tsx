@@ -85,7 +85,7 @@ export default function Audit({ onNavigate }: { onNavigate: (k: NavKey) => void 
               'AI 语音问答仅限专科知识库内宣教内容，超出范围强制转人工，不生成诊疗方案。',
               '演示环境数据存储于浏览器本地（localStorage），不对外传输任何真实患者信息。',
             ].map((t) => (
-              <div key={t} className="rounded-lg bg-slate-50 px-3 py-2">{t}</div>
+              <div key={t} className="rounded-[2px] bg-slate-50 px-3 py-2">{t}</div>
             ))}
           </div>
         </section>

@@ -2,8 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   设计语言：参照上海长海医院官网（chhospital.com.cn）
+   主色 海军蓝 #004589 ｜ 点缀 中国红 #d01027 ｜ 白底 + 细分割线 + 实心标题块
+   ========================================================================== */
+
 :root {
   color-scheme: light;
+  --navy: #004589;
+  --navy-deep: #003366;
+  --red: #d01027;
+  --ink: #333333;
+  --line: #e0e6ee;
 }
 
 html, body, #root {
@@ -11,11 +21,11 @@ html, body, #root {
 }
 
 body {
-  @apply bg-slate-50 text-slate-800 antialiased;
+  @apply bg-white text-slate-800 antialiased;
+  color: var(--ink);
   font-feature-settings: 'tnum';
 }
 
-/* 台湾/大陆字体回退与数字等宽 */
 .tnum { font-variant-numeric: tabular-nums; }
 
 /* 打印（报表导出） */
@@ -24,39 +34,52 @@ body {
   body { background: #fff; }
 }
 
-/* 滚动条 */
+/* 滚动条：细、克制 */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
-::-webkit-scrollbar-track { @apply bg-transparent; }
+::-webkit-scrollbar-thumb { background: #c3cedd; border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: #9fb2c9; }
+::-webkit-scrollbar-track { background: #f2f5f9; }
 
 /* 老年患者模式：更大字号与触控面积 */
-.elder-mode {
-  font-size: 118%;
-}
-.elder-mode .elder-btn {
-  min-height: 56px;
-  @apply text-lg;
-}
+.elder-mode { font-size: 118%; }
+.elder-mode .elder-btn { min-height: 56px; @apply text-lg; }
 
 @layer components {
+  /* 卡片：近乎直角 + 细边框，机构感强于圆角卡片 */
   .card {
-    @apply bg-white rounded-xl border border-slate-200/80 shadow-card;
+    @apply bg-white rounded-[3px] border border-[#e0e6ee] shadow-[0_1px_3px_rgba(0,45,90,.06)];
   }
   .chip {
-    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
+    @apply inline-flex items-center gap-1 rounded-[2px] px-2 py-0.5 text-xs font-medium;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition
+    @apply inline-flex items-center justify-center gap-1.5 rounded-[2px] px-3.5 py-2 text-sm font-medium transition
       disabled:opacity-50 disabled:cursor-not-allowed select-none;
   }
   .btn-primary { @apply btn bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800; }
-  .btn-ghost   { @apply btn bg-white text-slate-700 border border-slate-200 hover:bg-slate-50; }
-  .btn-danger  { @apply btn bg-rose-600 text-white hover:bg-rose-700; }
-  .btn-soft    { @apply btn bg-brand-50 text-brand-700 hover:bg-brand-100; }
+  .btn-ghost   { @apply btn bg-white text-slate-700 border border-[#cfd9e6] hover:border-brand-400 hover:text-brand-700; }
+  .btn-danger  { @apply btn bg-accent-500 text-white hover:bg-accent-600; }
+  .btn-soft    { @apply btn bg-brand-50 text-brand-700 border border-brand-100 hover:bg-brand-100; }
   .input {
-    @apply w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none transition
-      placeholder:text-slate-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100;
+    @apply w-full rounded-[2px] border border-[#cfd9e6] px-3 py-2 text-sm outline-none transition
+      placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-100;
   }
   .label { @apply text-xs font-medium text-slate-500; }
-  .section-title { @apply text-sm font-semibold text-slate-900; }
+  .section-title { @apply text-sm font-semibold text-brand-800; }
+
+  /* 机构式标题：左侧海军蓝竖条 —— 参考站二级标题处理 */
+  .heading-bar {
+    @apply flex items-center gap-2 border-l-[3px] border-brand-600 pl-2.5 text-[15px] font-semibold text-brand-800;
+  }
+  /* 实心色块标题（参考站侧栏"走进长海"块） */
+  .heading-block {
+    @apply flex items-center gap-2 bg-brand-600 px-3 py-2 text-[13px] font-semibold tracking-wide text-white;
+  }
+  /* 表格：细线、无圆角，贴近官网列表风格 */
+  .tbl { @apply w-full border-collapse text-left text-xs; }
+  .tbl thead th {
+    @apply border-b border-[#dce4ee] bg-[#f4f7fb] px-3 py-2 text-[11px] font-semibold text-brand-800;
+  }
+  .tbl tbody td { @apply border-b border-[#eef2f7] px-3 py-2 text-slate-600; }
+  .tbl tbody tr:hover td { @apply bg-[#f8fafd]; }
 }

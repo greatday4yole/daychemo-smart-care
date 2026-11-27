@@ -14,6 +14,7 @@ import { TEMPLATE_AUDIO, EDUCATION_AUDIO, CLIP, audioUrl, offlineFor, PHASE_FALL
 import { CTCAE_TERMS } from '../../data/ctcae'
 import { EMERGENCY_SIGNS, termSummary } from '../../lib/ctcae'
 import { isInQuietHours, relFuture, relTime, fmtDate, fmtTime } from '../../lib/date'
+import { LOGO_EMBLEM } from '../../components/Brand'
 import type { ReminderDispatch } from '../../types'
 
 const SYMPTOM_OPTIONS = [
@@ -77,11 +78,16 @@ export default function Patient({ onExit }: { onExit: () => void }) {
   const pendingFollow = followups.filter((f) => f.status !== 'done')
 
   return (
-    <div className={cn('min-h-screen bg-gradient-to-b from-brand-50 via-slate-50 to-white', elder && 'elder-mode')}>
-      {/* 顶部患者条 */}
-      <header className="sticky top-0 z-20 border-b border-slate-200/70 bg-white/85 backdrop-blur">
+    <div className={cn('min-h-screen bg-[#f5f8fc]', elder && 'elder-mode')}>
+      {/* 顶部：机构标识 + 患者条 */}
+      <header className="sticky top-0 z-20 border-b border-[#dde5ef] bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-lg items-center gap-2 border-b border-[#eef2f7] px-4 py-1.5">
+          <img src={LOGO_EMBLEM} alt="上海长海医院" className="h-5 w-5" />
+          <p className="truncate text-[10.5px] font-medium text-brand-800">上海长海医院 · 肿瘤内科日间化疗</p>
+          <span className="ml-auto shrink-0 rounded-[2px] bg-[#f2f5f9] px-1.5 py-0.5 text-[9px] text-slate-400">患者端</span>
+        </div>
         <div className="mx-auto flex max-w-lg items-center gap-2 px-4 py-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-800">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold text-white">
             {patient.name.slice(0, 1)}
           </div>
           <div className="min-w-0 flex-1">
@@ -91,11 +97,11 @@ export default function Patient({ onExit }: { onExit: () => void }) {
             </div>
             <p className="truncate text-[11px] text-slate-500">{patient.cycle} · {patient.phase === 'during' ? '化疗输注中' : patient.phase === 'pre' ? '待化疗' : `化疗后第 ${Math.max(0, Math.round((Date.now() - new Date(`${patient.chemoDate}T08:30:00`).getTime()) / 86400000))} 天`}</p>
           </div>
-          <button onClick={onExit} className="rounded-lg bg-slate-100 px-2.5 py-1.5 text-[11px] text-slate-600">退出</button>
+          <button onClick={onExit} className="rounded-[2px] border border-[#dde5ef] px-2.5 py-1.5 text-[11px] text-slate-600">退出</button>
         </div>
       </header>
 
-      <main className="mx-auto max-w-lg space-y-3 px-3 pb-24 pt-3">
+      <main className="mx-auto max-w-lg space-y-3 px-3 pb-28 pt-3">
         {tab === 'home' && <PatientHome {...{ patient, dispatches, todayReminders, recentReminders, latestReminder, openReminders, followups, pendingFollow, setDetail, setTab, onExit, elder, setElder }} />}
         {tab === 'symptoms' && <SymptomReportPanel pid={pid} />}
         {tab === 'ai' && <AiAssistant pid={pid} patientName={patient.name} />}
@@ -104,7 +110,7 @@ export default function Patient({ onExit }: { onExit: () => void }) {
       </main>
 
       {/* 底部导航 */}
-      <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
+      <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-[#dde5ef] bg-white pb-[env(safe-area-inset-bottom)]">
         <div className="mx-auto flex max-w-lg items-stretch justify-around">
           {[
             { k: 'home' as TabKey, l: '首页', i: Home },
@@ -203,7 +209,8 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
   return (
     <>
       {/* AI 语音提醒卡 */}
-      <section className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 p-4 text-white shadow-card">
+      <section className="relative overflow-hidden border border-brand-700 bg-gradient-to-br from-brand-700 to-brand-800 p-4 text-white shadow-card">
+        <span className="absolute left-0 top-0 h-full w-[3px] bg-accent-500" />
         <div className="flex items-center gap-1.5 text-[11px] text-brand-100">
           <Sparkles className="h-3.5 w-3.5" />AI 语音提醒 · 分时序智能推送
         </div>
@@ -214,12 +221,12 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
             <div className="mt-3 flex items-center gap-2">
               <button
                 onClick={() => play(latestReminder)}
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-white/15 py-2.5 text-[13px] font-medium ring-1 ring-white/20 backdrop-blur active:bg-white/25"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-[2px] bg-white/15 py-2.5 text-[13px] font-medium ring-1 ring-white/20 backdrop-blur active:bg-white/25"
               >
                 {playing === latestReminder.id ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                 {playing === latestReminder.id ? '正在播报…' : '语音播报'}
               </button>
-              <button onClick={() => setDetail(latestReminder.id)} className="flex items-center justify-center gap-1 rounded-xl bg-white px-3 py-2.5 text-[13px] font-medium text-brand-800">
+              <button onClick={() => setDetail(latestReminder.id)} className="flex items-center justify-center gap-1 rounded-[2px] bg-white px-3 py-2.5 text-[13px] font-medium text-brand-800">
                 查看 <ChevronRight className="h-3.5 w-3.5" />
               </button>
             </div>
@@ -243,7 +250,7 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
           const Icon = a.i
           return (
             <button key={a.t} onClick={() => setTab(a.k)} className="card flex items-center gap-2.5 p-3 text-left transition active:scale-[.98]">
-              <span className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-xl', a.tone)}><Icon className="h-4.5 w-4.5" /></span>
+              <span className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px]', a.tone)}><Icon className="h-4.5 w-4.5" /></span>
               <span className="min-w-0">
                 <span className="block text-[13px] font-semibold text-slate-800">{a.t}</span>
                 <span className="block truncate text-[10px] text-slate-500">{a.d}</span>
@@ -260,7 +267,7 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
             <h2 className="section-title flex items-center gap-1.5"><CalendarClock className="h-3.5 w-3.5 text-amber-500" />下次随访</h2>
             <Badge tone={nextFollow.dueDate === fmtDate(new Date()) ? 'rose' : 'slate'}>{relFuture(`${nextFollow.dueDate}T09:00:00`)}</Badge>
           </div>
-          <div className="mt-2 flex items-center gap-3 rounded-xl bg-amber-50/70 px-3 py-2.5">
+          <div className="mt-2 flex items-center gap-3 rounded-[2px] bg-amber-50/70 px-3 py-2.5">
             <div className="text-center">
               <p className="text-xl font-bold text-amber-700 tnum">{nextFollow.dueDate.slice(8)}</p>
               <p className="text-[10px] text-amber-600">{nextFollow.dueDate.slice(5, 7)} 月</p>
@@ -299,7 +306,7 @@ function PatientHome({ patient, dispatches, todayReminders, recentReminders, lat
                 <p className="mt-0.5 line-clamp-2 text-[11px] text-slate-500">{d.body}</p>
                 <p className="mt-0.5 text-[10px] text-slate-400">{d.dueAt.slice(11, 16)} · {d.channel.includes('voice') ? '语音+推送' : '推送'}</p>
               </button>
-              <button onClick={() => d.channel.includes('voice') && speakOrPlay(d.body, { rate: settings.rate, offlineSrc: offlineSrcFor(d), useOffline: settings.offlinePack })} className="mt-0.5 rounded-lg bg-slate-100 p-1.5 text-slate-500" aria-label="播报">
+              <button onClick={() => d.channel.includes('voice') && speakOrPlay(d.body, { rate: settings.rate, offlineSrc: offlineSrcFor(d), useOffline: settings.offlinePack })} className="mt-0.5 rounded-[2px] bg-slate-100 p-1.5 text-slate-500" aria-label="播报">
                 <Volume2 className="h-3.5 w-3.5" />
               </button>
             </div>
@@ -383,7 +390,7 @@ function SymptomReportPanel({ pid }: { pid: string }) {
         </div>
         <p className="mt-1 text-[11px] leading-relaxed text-slate-500">请如实选择今天出现的症状，系统会按 CTCAE 标准初步分级，高危症状将立即通知医护。</p>
 
-        <button onClick={useVoice} className={cn('mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-medium transition elder-btn',
+        <button onClick={useVoice} className={cn('mt-3 flex w-full items-center justify-center gap-2 rounded-[2px] py-3 text-sm font-medium transition elder-btn',
           listening ? 'bg-rose-100 text-rose-700' : 'bg-brand-50 text-brand-700')}>
           {listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
           {listening ? '正在听… 请说出您的症状' : '不方便点选？说一句也行'}
@@ -394,7 +401,7 @@ function SymptomReportPanel({ pid }: { pid: string }) {
           <div className="grid grid-cols-3 gap-2">
             {SYMPTOM_OPTIONS.map((s) => (
               <button key={s.key} onClick={() => toggle(s.key)}
-                className={cn('flex flex-col items-center gap-1 rounded-xl border py-2.5 text-[12px] transition elder-btn',
+                className={cn('flex flex-col items-center gap-1 rounded-[2px] border py-2.5 text-[12px] transition elder-btn',
                   selected.includes(s.key) ? 'border-rose-300 bg-rose-50 font-semibold text-rose-700' : 'border-slate-200 bg-white text-slate-600')}>
                 <span className="text-lg leading-none">{s.icon}</span>{s.label}
               </button>
@@ -466,7 +473,7 @@ function SymptomReportPanel({ pid }: { pid: string }) {
                     <GradeBadge grade={result.grade as number} />
                     {result.emergency ? <Badge tone="rose"><ShieldAlert className="h-3 w-3" />触发高危预警</Badge> : <Badge tone="emerald">已同步医护</Badge>}
                   </div>
-                  {t && <p className="rounded-lg bg-violet-50 px-3 py-2 text-xs leading-relaxed text-violet-800">CTCAE 对照（{t.term} {result.grade} 级）：{termSummary(t, result.grade as any)}</p>}
+                  {t && <p className="rounded-[2px] bg-violet-50 px-3 py-2 text-xs leading-relaxed text-violet-800">CTCAE 对照（{t.term} {result.grade} 级）：{termSummary(t, result.grade as any)}</p>}
                   <p className="text-xs leading-relaxed text-slate-600">
                     {result.emergency
                       ? '您描述的症状属于高危信号，系统已立即通知您的责任护士。请现在：① 联系医护或拨打日间化疗中心电话 010-8888 2046；② 情况紧急请拨打 120 或前往急诊；③ 携带化疗记录单与化验单。'
@@ -533,7 +540,7 @@ function AiAssistant({ pid, patientName }: { pid: string; patientName: string })
   return (
     <div className="space-y-3">
       {/* 语音交互区 */}
-      <section className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand-700 to-brand-900 p-4 text-white">
+      <section className="overflow-hidden rounded-[3px] bg-gradient-to-br from-brand-700 to-brand-900 p-4 text-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-[11px] text-brand-100"><Bot className="h-3.5 w-3.5" />AI 语音小助手（专科知识库）</div>
           <button onClick={() => setVoiceReply((v) => !v)} className="rounded-full bg-white/15 px-2 py-1 text-[10px] ring-1 ring-white/20">
@@ -555,9 +562,9 @@ function AiAssistant({ pid, patientName }: { pid: string; patientName: string })
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && ask(input)}
             placeholder="也可以直接打字提问…"
-            className="min-w-0 flex-1 rounded-xl bg-white/10 px-3 py-2 text-sm text-white placeholder:text-brand-200/60 outline-none ring-1 ring-white/15 focus:ring-white/30"
+            className="min-w-0 flex-1 rounded-[2px] bg-white/10 px-3 py-2 text-sm text-white placeholder:text-brand-200/60 outline-none ring-1 ring-white/15 focus:ring-white/30"
           />
-          <button onClick={() => ask(input)} className="rounded-xl bg-white px-3 py-2 text-brand-800"><Send className="h-4 w-4" /></button>
+          <button onClick={() => ask(input)} className="rounded-[2px] bg-white px-3 py-2 text-brand-800"><Send className="h-4 w-4" /></button>
         </div>
       </section>
 
@@ -577,14 +584,14 @@ function AiAssistant({ pid, patientName }: { pid: string; patientName: string })
         {chats.map((c) => (
           <div key={c.id} className="space-y-1.5">
             <div className="flex justify-end">
-              <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-brand-600 px-3 py-2 text-[13px] leading-relaxed text-white">
+              <div className="max-w-[85%] rounded-[3px] rounded-br-sm bg-brand-600 px-3 py-2 text-[13px] leading-relaxed text-white">
                 {c.question}
               </div>
             </div>
             <div className="flex items-start gap-1.5">
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700"><Bot className="h-3.5 w-3.5" /></div>
               <div className="min-w-0 flex-1">
-                <div className="max-w-full rounded-2xl rounded-bl-sm bg-white px-3 py-2 text-[13px] leading-relaxed text-slate-700 shadow-card">
+                <div className="max-w-full rounded-[3px] rounded-bl-sm bg-white px-3 py-2 text-[13px] leading-relaxed text-slate-700 shadow-card">
                   <p className="whitespace-pre-wrap">{c.answer}</p>
                   <div className="mt-2 flex items-center gap-1.5 border-t border-slate-100 pt-1.5">
                     <Badge tone={c.needsHuman ? 'amber' : 'brand'}>{c.intent}</Badge>
@@ -607,7 +614,7 @@ function AiAssistant({ pid, patientName }: { pid: string; patientName: string })
         ))}
       </section>
 
-      <p className="rounded-xl bg-amber-50 px-3 py-2 text-[10px] leading-relaxed text-amber-800">
+      <p className="rounded-[2px] bg-amber-50 px-3 py-2 text-[10px] leading-relaxed text-amber-800">
         <Stethoscope className="mr-1 inline h-3 w-3" />
         AI 仅提供专科宣教指引与风险分流，<strong>不替代执业医师诊疗</strong>。涉及用药调整、方案变更、病情预后等问题将强制转医护人工接诊；急症将引导立即拨打 120 或前往急诊。
       </p>
@@ -648,7 +655,7 @@ function EducationPanel({ pid, risk, phase }: { pid: string; risk: 'low' | 'mid'
       <div className="space-y-2">
         {items.map((e) => (
           <button key={e.id} onClick={() => setOpen(e.id)} className="card flex w-full items-start gap-3 p-3.5 text-left">
-            <span className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-xl', e.form.includes('语音') ? 'bg-brand-50 text-brand-700' : 'bg-slate-100 text-slate-500')}>
+            <span className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px]', e.form.includes('语音') ? 'bg-brand-50 text-brand-700' : 'bg-slate-100 text-slate-500')}>
               {e.form.includes('语音') ? <Volume2 className="h-4 w-4" /> : <FileText className="h-4 w-4" />}
             </span>
             <div className="min-w-0 flex-1">
@@ -681,7 +688,7 @@ function EducationPanel({ pid, risk, phase }: { pid: string; risk: 'low' | 'mid'
               <Badge tone="slate">{current.form}</Badge>
               <Badge tone="slate">{current.version}</Badge>
             </div>
-            <div className="whitespace-pre-wrap rounded-xl bg-slate-50 p-3 text-[13px] leading-relaxed text-slate-700">{current.body}</div>
+            <div className="whitespace-pre-wrap rounded-[2px] bg-slate-50 p-3 text-[13px] leading-relaxed text-slate-700">{current.body}</div>
             <div>
               <p className="text-[11px] font-semibold text-brand-700">要点回顾</p>
               <div className="mt-1 space-y-1">
@@ -722,8 +729,8 @@ function MinePanel({ pid, elder, setElder }: { pid: string; elder: boolean; setE
           </div>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
-          <div className="rounded-lg bg-slate-50 px-2.5 py-2"><span className="text-slate-400">主管医生</span><p className="font-medium text-slate-700">{patient.attending}</p></div>
-          <div className="rounded-lg bg-slate-50 px-2.5 py-2"><span className="text-slate-400">责任护士</span><p className="font-medium text-slate-700">{patient.primaryNurse}</p></div>
+          <div className="rounded-[2px] bg-slate-50 px-2.5 py-2"><span className="text-slate-400">主管医生</span><p className="font-medium text-slate-700">{patient.attending}</p></div>
+          <div className="rounded-[2px] bg-slate-50 px-2.5 py-2"><span className="text-slate-400">责任护士</span><p className="font-medium text-slate-700">{patient.primaryNurse}</p></div>
         </div>
         <a href="tel:01088882046" className="btn-primary mt-3 w-full"><Phone className="h-4 w-4" />一键联系日间化疗中心</a>
       </section>
@@ -745,7 +752,7 @@ function MinePanel({ pid, elder, setElder }: { pid: string; elder: boolean; setE
             <div className="mt-1 flex gap-1.5">
               {RATE_LABELS.map((r) => (
                 <button key={r.value} onClick={() => saveSettings({ rate: r.value }, patient.name, 'patient')}
-                  className={cn('flex-1 rounded-lg py-1.5 text-xs', settings.rate === r.value ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600')}>{r.label}</button>
+                  className={cn('flex-1 rounded-[2px] py-1.5 text-xs', settings.rate === r.value ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600')}>{r.label}</button>
               ))}
             </div>
           </div>

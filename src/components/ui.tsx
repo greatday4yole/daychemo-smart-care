@@ -68,7 +68,7 @@ export const Stat = ({ label, value, unit, hint, tone = 'slate', icon }: { label
 }
 
 export const Empty = ({ title, hint, action }: { title: string; hint?: string; action?: React.ReactNode }) => (
-  <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-white/60 px-6 py-10 text-center">
+  <div className="flex flex-col items-center justify-center gap-2 rounded-[2px] border border-dashed border-slate-200 bg-white/60 px-6 py-10 text-center">
     <p className="text-sm font-medium text-slate-600">{title}</p>
     {hint && <p className="text-xs text-slate-400">{hint}</p>}
     {action}
@@ -85,7 +85,7 @@ export const Progress = ({ value, tone = 'brand' }: { value: number; tone?: stri
 }
 
 export const Tabs = <T extends string>({ tabs, value, onChange }: { tabs: { key: T; label: string; count?: number }[]; value: T; onChange: (v: T) => void }) => (
-  <div className="flex gap-1 overflow-x-auto rounded-lg bg-slate-100 p-1">
+  <div className="flex gap-1 overflow-x-auto rounded-[2px] bg-slate-100 p-1">
     {tabs.map((t) => (
       <button
         key={t.key}
@@ -106,7 +106,7 @@ export const Modal = ({ open, onClose, title, children, footer, width = 'max-w-2
   if (!open) return null
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/40 p-0 backdrop-blur-sm sm:items-center sm:p-6">
-      <div className={cn('flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-float sm:rounded-2xl animate-slide-up', width)}>
+      <div className={cn('flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-[3px] bg-white shadow-float sm:rounded-[3px] animate-slide-up', width)}>
         <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3.5">
           <h3 className="text-base font-semibold text-slate-900">{title}</h3>
           <button onClick={onClose} className="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600" aria-label="关闭">✕</button>

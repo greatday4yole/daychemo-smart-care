@@ -34,7 +34,7 @@ export const PatientDrawer = ({ patientId, onClose }: { patientId: string | null
                 {maskMrn(patient.mrn)} · {patient.bed ?? '居家'} · 主管：{patient.attending} · 责任护士：{patient.primaryNurse}
               </p>
             </div>
-            <button onClick={onClose} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100"><X className="h-4 w-4" /></button>
+            <button onClick={onClose} className="rounded-[2px] p-1.5 text-slate-400 hover:bg-slate-100"><X className="h-4 w-4" /></button>
           </div>
           <div className="mt-3 flex flex-wrap gap-1.5">
             <Badge tone="sky">{patient.diagnosis}</Badge>
@@ -130,7 +130,7 @@ export const PatientDrawer = ({ patientId, onClose }: { patientId: string | null
                       { k: 'PLT', v: latestLab.plt, g: gradeByLab('plt', { plt: latestLab.plt }) },
                       { k: 'Hb', v: latestLab.hb, g: gradeByLab('hb', { hb: latestLab.hb }) },
                     ].map((x) => (
-                      <div key={x.k} className="rounded-lg bg-slate-50 px-2 py-2">
+                      <div key={x.k} className="rounded-[2px] bg-slate-50 px-2 py-2">
                         <p className="text-[10px] text-slate-400">{x.k}</p>
                         <p className="text-sm font-semibold text-slate-800 tnum">{x.v}</p>
                         <GradeBadge grade={x.g} />
@@ -157,7 +157,7 @@ export const PatientDrawer = ({ patientId, onClose }: { patientId: string | null
                     {a.tags.map((t) => <Badge key={t} tone="slate">{t}</Badge>)}
                     {a.ctcaeref.map((c) => <Badge key={c} tone="violet">CTCAE：{c}</Badge>)}
                   </div>
-                  {a.nurseNote && <p className="mt-2 rounded-lg bg-slate-50 p-2 text-xs leading-relaxed text-slate-600">{a.nurseNote}</p>}
+                  {a.nurseNote && <p className="mt-2 rounded-[2px] bg-slate-50 p-2 text-xs leading-relaxed text-slate-600">{a.nurseNote}</p>}
                 </section>
               ))}
             </>

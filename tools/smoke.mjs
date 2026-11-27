@@ -69,7 +69,7 @@ await page.keyboard.press('Escape').catch(() => {})
 await page.locator('div.fixed.inset-0 button[aria-label=关闭]').first().click().catch(() => {})
 
 // 2) 头护士：质控 + 配置 + 知识库 + 接口
-await page.locator('aside').getByTitle('退出登录').click()
+await page.getByRole('button', { name: '退出登录' }).first().click()
 await page.waitForTimeout(600)
 await page.getByText('张海燕').first().click()
 await page.waitForTimeout(800)
@@ -99,7 +99,7 @@ const logHas = await page.getByText(/LIS 推送成功/).first().isVisible().catc
 logHas ? ok('LIS 模拟推送与自动研判') : fail('LIS 模拟推送')
 
 // 3) 患者端
-await page.getByRole('button', { name: /患者端 H5/ }).click()
+await page.locator('aside').getByRole('button', { name: /查看患者端/ }).click()
 await page.waitForTimeout(700)
 await page.screenshot({ path: `${OUT}/12-patient-home.png`, fullPage: true })
 ok('患者端首页', `URL ${page.url()}`)
@@ -141,7 +141,7 @@ ok('患者设置页')
 // 4) 床头端
 await page.getByRole('button', { name: /返回医护端/ }).click()
 await page.waitForTimeout(400)
-await page.getByRole('button', { name: /床头端/ }).click()
+await page.goto(`${BASE}#/bedside`, { waitUntil: 'domcontentloaded' })
 await page.waitForTimeout(700)
 await page.screenshot({ path: `${OUT}/18-bedside.png`, fullPage: true })
 ok('床头端', `URL ${page.url()}`)
